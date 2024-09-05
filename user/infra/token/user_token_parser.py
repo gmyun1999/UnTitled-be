@@ -1,13 +1,15 @@
 from typing import Any
 
 import jwt
-
+from django.http.request import HttpHeaders
 from common import response_msg
+from common.constant import RequestHeader
+from common.service.token.i_token_parser import ITokenParser
 from letter.settings import JWT_SECRET
 from user.domain.user_token import UserTokenPayload
 
 
-class UserTokenParser:
+class UserTokenParser(ITokenParser):
     JWT_ALGORITHM = "HS512"
     JWT_SECRET = JWT_SECRET
 
@@ -32,7 +34,13 @@ class UserTokenParser:
         except jwt.ExpiredSignatureError:
             return None, response_msg.TokenMessage.EXPIRED
 
-    def check_user(self, token: str, validate_type: str, allowed_roles: list[str]):
+    def check_token(
+        self,
+        token: str,
+        validate_type: str,
+        allowed_roles: list[str]
+    )->tuple[UserTokenPayload | None, str]:
+        
         payload_vo, msg = self._validate_token(
             token=token, validate_type=validate_type, allowed_roles=allowed_roles
         )
@@ -45,3 +53,7 @@ class UserTokenParser:
 
     def decode_token(self, token: str) -> dict[str, Any]:
         return jwt.decode(token, self.JWT_SECRET, algorithms=[self.JWT_ALGORITHM])
+
+    def get_token(self, http_header: HttpHeaders) -> str:
+        authorization = http_header.get(RequestHeader.HEADER_AUTHORIZATION, "")
+        return authorization.replace(RequestHeader.HEADER_PREFIX_BEARER, "")

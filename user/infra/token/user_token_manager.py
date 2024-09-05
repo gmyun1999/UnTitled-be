@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 import jwt
 
-from common.session.token.i_token_manager import ITokenManager
+from common.service.token.i_token_manager import ITokenManager
 from letter import settings
 from user.domain.user_role import UserRole
 from user.domain.user_token import UserTokenExp, UserTokenPayload, UserTokenType
@@ -12,7 +12,7 @@ class UserTokenManager(ITokenManager):
     JWT_ALGORITHM = "HS512"
     JWT_SECRET = settings.JWT_SECRET
 
-    def create_admin_access_token(self, admin_id: str):
+    def create_admin_access_token(self, admin_id: str) -> str:
         payload = self._create_user_token_payload(
             admin_id=admin_id,
             role=UserRole.ADMIN,
@@ -21,7 +21,7 @@ class UserTokenManager(ITokenManager):
         )
         return self._create_user_token(user_payload_vo=payload)
 
-    def create_admin_refresh_token(self, admin_id: str):
+    def create_admin_refresh_token(self, admin_id: str) -> str:
         payload = self._create_user_token_payload(
             admin_id=admin_id,
             role=UserRole.ADMIN,
@@ -30,7 +30,7 @@ class UserTokenManager(ITokenManager):
         )
         return self._create_user_token(user_payload_vo=payload)
 
-    def create_user_access_token(self, user_id: str):
+    def create_user_access_token(self, user_id: str) -> str:
         payload = self._create_user_token_payload(
             user_id=user_id,
             role=UserRole.USER,
@@ -39,7 +39,7 @@ class UserTokenManager(ITokenManager):
         )
         return self._create_user_token(user_payload_vo=payload)
 
-    def create_user_refresh_token(self, user_id: str):
+    def create_user_refresh_token(self, user_id: str) -> str:
         payload = self._create_user_token_payload(
             user_id=user_id,
             role=UserRole.USER,
@@ -55,7 +55,7 @@ class UserTokenManager(ITokenManager):
         role: UserRole = UserRole.USER,
         type: str = UserTokenType.ACCESS,
         seconds: int = UserTokenExp.ACCESS_EXP,
-    ):
+    )-> UserTokenPayload:
         return UserTokenPayload(
             admin_id=admin_id,
             user_id=user_id,
@@ -65,7 +65,7 @@ class UserTokenManager(ITokenManager):
             iat=int(datetime.now().timestamp()),  # 발급시간
         )
 
-    def _create_user_token(self, user_payload_vo: UserTokenPayload):
+    def _create_user_token(self, user_payload_vo: UserTokenPayload) -> str:
         payload = user_payload_vo.to_dto()
         jwt_token = jwt.encode(payload, self.JWT_SECRET, self.JWT_ALGORITHM)
 
