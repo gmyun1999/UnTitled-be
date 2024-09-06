@@ -12,9 +12,11 @@ class ITokenParser(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def check_token(self, token: str, allowed_roles: list[int], validate_type: str) -> tuple[Any | None, str]:
+    def check_token(
+        self, token: str, allowed_roles: list[str], validate_type: str
+    ) -> tuple[Any | None, str]:
         """
-        params: 토큰, 역할, access | refresh 
+        params: 토큰, 역할, access | refresh
         return: tuple[TokenPayLoad_Vo | None, msg]
         """
         pass

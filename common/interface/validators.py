@@ -76,4 +76,3 @@ def validate_form_data(model: Type[BaseModel]):
         return wrapper
 
     return decorated_func
-

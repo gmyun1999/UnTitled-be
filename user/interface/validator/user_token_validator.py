@@ -1,11 +1,12 @@
 from functools import wraps
-from django.http import JsonResponse
-from common.response_msg import MESSAGE
 
+from django.http import JsonResponse
+from rest_framework import status
+
+from common.response_msg import MESSAGE
 from common.service.token.i_token_parser import ITokenParser
 from user.domain.user_role import UserRoles
 from user.domain.user_token import UserTokenType
-from rest_framework import status
 from user.infra.token.user_token_parser import UserTokenParser
 
 
@@ -18,9 +19,9 @@ def validate_token(
         def wrapper(*args, **kwargs):
             request = args[1]
             headers = request.headers
-            
+
             # TODO: DI 적용
-            token_parser: ITokenParser =  UserTokenParser()
+            token_parser: ITokenParser = UserTokenParser()
             token = token_parser.get_token(http_header=headers)
             token_payload_vo, result_message = token_parser.check_token(
                 token=token,

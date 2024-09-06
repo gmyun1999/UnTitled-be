@@ -55,7 +55,7 @@ class UserTokenManager(ITokenManager):
         role: UserRole = UserRole.USER,
         type: str = UserTokenType.ACCESS,
         seconds: int = UserTokenExp.ACCESS_EXP,
-    )-> UserTokenPayload:
+    ) -> UserTokenPayload:
         return UserTokenPayload(
             admin_id=admin_id,
             user_id=user_id,

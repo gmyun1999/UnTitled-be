@@ -9,6 +9,7 @@ class OAuthType(StrEnum):
     GOOGLE = "google"
     APPLE = "apple"
 
+
 @dataclass
 class User(Domain):
     """
@@ -38,7 +39,8 @@ class User(Domain):
 
 @dataclass
 class OAuthUser:
-    id: str
+    id: str  # id는 uuid가 아니라 Oauth server가 넘겨준 id 를 의미함
+    oauth_type: OAuthType
     name: str | None = None
     email: str | None = None
     mobile_no: str | None = None

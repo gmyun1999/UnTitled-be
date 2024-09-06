@@ -2,6 +2,7 @@ from typing import Any
 
 import jwt
 from django.http.request import HttpHeaders
+
 from common import response_msg
 from common.constant import RequestHeader
 from common.service.token.i_token_parser import ITokenParser
@@ -35,12 +36,8 @@ class UserTokenParser(ITokenParser):
             return None, response_msg.TokenMessage.EXPIRED
 
     def check_token(
-        self,
-        token: str,
-        validate_type: str,
-        allowed_roles: list[str]
-    )->tuple[UserTokenPayload | None, str]:
-        
+        self, token: str, validate_type: str, allowed_roles: list[str]
+    ) -> tuple[UserTokenPayload | None, str]:
         payload_vo, msg = self._validate_token(
             token=token, validate_type=validate_type, allowed_roles=allowed_roles
         )
