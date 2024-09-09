@@ -17,6 +17,13 @@ class UserTokenExp(IntEnum):
 
 @dataclass
 class UserTokenPayload(Domain):
+    FIELD_ADMIN_ID = "admin_id"
+    FIELD_USER_ID = "user_id"
+    FIELD_TYPE = "type"
+    FIELD_ROLE = "role"
+    FIELD_EXP = "exp"
+    FIELD_IAT = "iat"
+
     admin_id: str | None
     user_id: str | None
     type: str

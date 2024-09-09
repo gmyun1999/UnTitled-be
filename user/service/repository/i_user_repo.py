@@ -19,5 +19,6 @@ class IUserRepo(metaclass=ABCMeta):
     def get_user(self, filter: Filter) -> userVo | None:
         pass
 
+    @abstractmethod
     def create(self, user_vo: userVo) -> userVo:
-        return user_vo
+        pass
