@@ -96,6 +96,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
     "user",
+    "lucky_letter",
 ]
 
 MIDDLEWARE = [
