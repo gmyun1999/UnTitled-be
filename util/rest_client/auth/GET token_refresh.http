@@ -1,0 +1,4 @@
+GET {{letter-host}}/user/app_001/?relation=FRIEND&status=ACCEPT
+Content-Type: application/json
+
+

@@ -12,7 +12,7 @@ class RelationType(StrEnum):
 class RelationStatus(StrEnum):
     PENDING = "PENDING"
     REJECT = "REJECT"
-    SUCCESS = "SUCCESS"
+    ACCEPT = "ACCEPT"
 
 
 @dataclass

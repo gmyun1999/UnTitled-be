@@ -8,19 +8,18 @@ from user.service.repository.i_user_repo import IUserRepo
 
 class UserRepo(IUserRepo):
     def get_user(self, filter: IUserRepo.Filter) -> UserVo | None:
-        user = User.object.all()
+        user = User.objects.all()
         if filter.user_id:
-            user = user.filter(id=filter.user_id)
-        if filter.app_id:
-            user = user.filter(app_id=filter.app_id)
+            user = User.objects.get(id=filter.user_id)
+        elif filter.app_id:
+            user = User.objects.get(app_id=filter.app_id)
+        else:
+            return None
 
         serializer = UserSerializer(user)
         user_dict = serializer.data
 
-        if user_dict:
-            return UserVo.from_dto(dto=user_dict)
-
-        return None
+        return UserVo.from_dto(dto=user_dict)
 
     def get_bulk(self):
         pass
