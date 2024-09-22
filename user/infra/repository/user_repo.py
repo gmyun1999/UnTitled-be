@@ -9,10 +9,10 @@ from user.service.repository.i_user_repo import IUserRepo
 class UserRepo(IUserRepo):
     def get_user(self, filter: IUserRepo.Filter) -> UserVo | None:
         user = User.object.all()
-        if filter.oauth_id and filter.oauth_type:
-            user = user.filter(oauth_id=filter.oauth_id, oauth_type=filter.oauth_type)
         if filter.user_id:
             user = user.filter(id=filter.user_id)
+        if filter.app_id:
+            user = user.filter(app_id=filter.app_id)
 
         serializer = UserSerializer(user)
         user_dict = serializer.data

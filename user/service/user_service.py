@@ -1,5 +1,4 @@
 from common.service.token.i_token_manager import ITokenManager
-from user.domain.user import OAuthUser
 from user.domain.user import User as UserVo
 from user.infra.repository.user_repo import UserRepo
 from user.infra.token.user_token_manager import UserTokenManager
@@ -12,15 +11,16 @@ class UserService:
         self.user_token_manager: ITokenManager = UserTokenManager()
         self.user_repo: IUserRepo = UserRepo()
 
+    def check_duplicate_app_id(self, app_id: str) -> bool:
+        filter = self.user_repo.Filter(app_id=app_id)
+        user = self.user_repo.get_user(filter=filter)
+        if user is not None:
+            return True
+        if user is None:
+            return False
+
     def create_access_token(self, user_id: str) -> dict:
         return {"access": self.user_token_manager.create_user_access_token(user_id)}
-
-    def get_user_from_oauth_user(self, oauth_user: OAuthUser) -> UserVo | None:
-        oauth_id = oauth_user.id
-        oauth_type = oauth_user.oauth_type
-
-        user_filter = self.user_repo.Filter(oauth_id=oauth_id, oauth_type=oauth_type)
-        return self.user_repo.get_user(filter=user_filter)
 
     def create_user(self, user: UserVo) -> UserVo:
         """
@@ -40,3 +40,11 @@ class UserService:
             "access": self.user_token_manager.create_user_access_token(user_id),
             "refresh": self.user_token_manager.create_user_refresh_token(user_id),
         }
+
+
+class UserRelationService:
+    def __init__(self) -> None:
+        pass
+
+    def get_relation(self, user: UserVo, Relation_type: str):
+        pass

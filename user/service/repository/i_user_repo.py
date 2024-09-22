@@ -8,12 +8,10 @@ class IUserRepo(metaclass=ABCMeta):
         def __init__(
             self,
             user_id: str | None = None,
-            oauth_id: str | None = None,
-            oauth_type: str | None = None,
+            app_id: str | None = None,
         ):
             self.user_id = user_id
-            self.oauth_id = oauth_id
-            self.oauth_type = oauth_type
+            self.app_id = app_id
 
     @abstractmethod
     def get_user(self, filter: Filter) -> userVo | None:
