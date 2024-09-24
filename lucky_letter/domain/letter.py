@@ -14,8 +14,8 @@ class Letter:
     """
 
     FIELD_ID = "id"
-    FIELD_TO_ID = "to_id"
-    FIELD_FROM_ID = "from_id"
+    FIELD_TO_APP_ID = "to_app_id"
+    FIELD_FROM_APP_ID = "from_app_id"
     FIELD_IS_ANONYMOUS = "is_anonymous"
     FIELD_WRITING_PAD_ID = "writing_pad_id"
     FIELD_ENVELOPE_ID = "envelope_id"
@@ -28,8 +28,8 @@ class Letter:
     FIELD_UPDATED_AT = "updated_at"
 
     id: str
-    to_id: str
-    from_id: str | None  # 특정 상대에게 보내는게 아닌 경우 None
+    to_app_id: str | None  # 특정 상대에게 보내는게 아닌 경우 None
+    from_app_id: str
     is_anonymous: bool
     writing_pad_id: str  # 편지지
     envelope_id: str  # 편지봉투

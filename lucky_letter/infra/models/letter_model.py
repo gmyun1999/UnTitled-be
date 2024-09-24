@@ -39,8 +39,8 @@ class Stamp(models.Model):
 
 class Letter(models.Model):
     id = models.CharField(primary_key=True, max_length=36)
-    to_id = models.CharField(max_length=36)
-    from_id = models.CharField(max_length=36, null=True, default=None)
+    to_app_id = models.CharField(max_length=36, null=True, default=None)
+    from_app_id = models.CharField(max_length=36)
     is_anonymous = models.BooleanField(default=False)
     writing_pad_id = models.CharField(max_length=36)
     envelope_id = models.CharField(max_length=36)
@@ -55,8 +55,8 @@ class Letter(models.Model):
     class Meta:
         db_table = "Letter"
         indexes = [
-            models.Index(fields=["to_id"]),
-            models.Index(fields=["from_id"]),
+            models.Index(fields=["to_app_id"]),
+            models.Index(fields=["from_app_id"]),
             models.Index(fields=["created_at"]),
         ]
 
