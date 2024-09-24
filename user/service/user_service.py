@@ -1,5 +1,4 @@
 from common.service.token.i_token_manager import ITokenManager
-from common.utils.exceptions import NotFound
 from user.domain.user import RelationStatus, RelationType
 from user.domain.user import User as UserVo
 from user.domain.user import UserRelation as UserRelationVo
@@ -15,15 +14,6 @@ class UserService:
         # TODO: DI 적용
         self.user_token_manager: ITokenManager = UserTokenManager()
         self.user_repo: IUserRepo = UserRepo()
-
-    def get_me(self, user_id: str | None = None, app_id: str | None = None) -> UserVo:
-        user_filter = self.user_repo.Filter(user_id=user_id, app_id=app_id)
-        user_vo = self.user_repo.get_user(filter=user_filter)
-
-        if user_vo is None:
-            raise NotFound
-
-        return user_vo
 
     def check_duplicate_app_id(self, app_id: str) -> bool:
         """

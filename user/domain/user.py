@@ -18,7 +18,7 @@ class RelationStatus(StrEnum):
 @dataclass
 class User(Domain):
     """
-    유저: OAuth 로그인만 가능
+    유저:
     """
 
     FIELD_ID = "id"

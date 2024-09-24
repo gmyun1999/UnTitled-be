@@ -11,10 +11,8 @@ class UserRepo(IUserRepo):
         user = User.objects.all()
         if filter.user_id:
             user = User.objects.get(id=filter.user_id)
-        elif filter.app_id:
+        if filter.app_id:
             user = User.objects.get(app_id=filter.app_id)
-        else:
-            return None
 
         serializer = UserSerializer(user)
         user_dict = serializer.data

@@ -6,18 +6,22 @@ from pydantic import BaseModel
 from rest_framework import status
 from rest_framework.views import APIView
 
+from common.interface.exceptions import NotFound
 from common.interface.validators import validate_query_params
+from common.service.token.i_token_manager import ITokenManager
 from user.domain.user import RelationStatus, RelationType, User
 from user.domain.user_role import UserRole
 from user.domain.user_token import UserTokenPayload, UserTokenType
+from user.infra.token.user_token_manager import UserTokenManager
 from user.interface.validator.user_token_validator import validate_token
 from user.service.user_service import UserRelationService, UserService
 
 
-class UserRelationView(APIView):
+class MyRelationshipsView(APIView):
     def __init__(self):
         self.user_relation_service = UserRelationService()
         self.user_service = UserService()
+        self.user_token_manager: ITokenManager = UserTokenManager()
 
     @dataclass
     class GetRelationParams(BaseModel):
@@ -26,10 +30,19 @@ class UserRelationView(APIView):
             RelationStatus.PENDING, RelationStatus.REJECT, RelationStatus.ACCEPT
         ] | None = None
 
+    @validate_token(roles=[UserRole.USER], validate_type=UserTokenType.ACCESS)
     @validate_query_params(GetRelationParams)
-    def get(self, request: HttpRequest, app_id: str, params: GetRelationParams):
-        # TODO: token validator 넣어서 자기 자신만 볼수있게 권한 걸어야함.
-        user: User = self.user_service.get_me(app_id=app_id)
+    def get(
+        self,
+        request: HttpRequest,
+        token_payload: UserTokenPayload,
+        params: GetRelationParams,
+    ):
+        user = self.user_token_manager.get_current_user(user_payload_vo=token_payload)
+
+        if user is None:
+            return JsonResponse(data={}, status=status.HTTP_400_BAD_REQUEST)
+
         user_relation = self.user_relation_service.get_relations(
             user_id=user.id,
             relation_status=params.status,

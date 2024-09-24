@@ -4,13 +4,35 @@ import jwt
 
 from common.service.token.i_token_manager import ITokenManager
 from letter import settings
+from user.domain.user import User as UserVo
 from user.domain.user_role import UserRole
 from user.domain.user_token import UserTokenExp, UserTokenPayload, UserTokenType
+from user.infra.repository.user_repo import UserRepo
+from user.service.repository.i_user_repo import IUserRepo
 
 
 class UserTokenManager(ITokenManager):
     JWT_ALGORITHM = "HS512"
     JWT_SECRET = settings.JWT_SECRET
+
+    def __init__(self) -> None:
+        super().__init__()
+        # TODO: DI 적용
+        self.user_repo: IUserRepo = UserRepo()
+
+    def get_current_user(self, user_payload_vo: UserTokenPayload) -> UserVo | None:
+        user_id = user_payload_vo.user_id
+        admin_id = user_payload_vo.admin_id
+
+        if user_id:
+            user_id = user_id
+        if admin_id:
+            user_id = admin_id
+
+        user_filter = self.user_repo.Filter(user_id=user_id)
+        user: UserVo | None = self.user_repo.get_user(filter=user_filter)
+
+        return user
 
     def create_admin_access_token(self, admin_id: str) -> str:
         payload = self._create_user_token_payload(
