@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from enum import StrEnum
 
+from common.domain import Domain
+
 
 class FontType(StrEnum):
     NATO_SANS_KR = "NATO_SANS_KR"
@@ -8,7 +10,7 @@ class FontType(StrEnum):
 
 
 @dataclass
-class Letter:
+class Letter(Domain):
     """
     편지 도메인 모델
     """
@@ -24,8 +26,6 @@ class Letter:
     FIELD_TITLE = "title"
     FIELD_FONT = "font"
     FIELD_WILL_ARRIVE_AT = "will_arrive_at"
-    FIELD_CREATED_AT = "created_at"
-    FIELD_UPDATED_AT = "updated_at"
 
     id: str
     to_app_id: str | None  # 특정 상대에게 보내는게 아닌 경우 None
@@ -38,12 +38,10 @@ class Letter:
     title: str
     font: FontType
     will_arrive_at: str  # 도착 시간을 명시할 경우
-    created_at: str
-    updated_at: str
 
 
 @dataclass
-class WritingPad:
+class WritingPad(Domain):
     """
     편지지 도메인 모델
     """
@@ -58,7 +56,7 @@ class WritingPad:
 
 
 @dataclass
-class Envelope:
+class Envelope(Domain):
     """
     편지봉투 도메인 모델
     """
@@ -73,7 +71,7 @@ class Envelope:
 
 
 @dataclass
-class Stamp:
+class Stamp(Domain):
     """
     우표 도메인 모델
     """

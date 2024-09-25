@@ -3,6 +3,8 @@
 from dataclasses import dataclass
 from enum import StrEnum
 
+from common.domain import Domain
+
 
 class NotificationType(StrEnum):
     RECEIVED_LETTER = "RECEIVED_LETTER"
@@ -15,7 +17,7 @@ class NotificationStatus(StrEnum):
 
 
 @dataclass
-class Notification:
+class Notification(Domain):
     id: str
     sender_id: str
     receiver_id: str
@@ -23,12 +25,10 @@ class Notification:
     title: str  # 알림 제목
     body: str  # 알림 내용
     is_read: bool
-    created_at: str
-    updated_at: str
 
 
 @dataclass
-class NotificationSetting:
+class NotificationSetting(Domain):
     id: str
     type: NotificationType
     user_id: str

@@ -6,7 +6,7 @@ from user.domain.user_token import UserTokenPayload
 
 class ITokenManager(metaclass=ABCMeta):
     @abstractmethod
-    def get_current_user(self, user_payload_vo: UserTokenPayload) -> User | None:
+    def get_current_user(self, user_payload_vo: UserTokenPayload) -> User:
         pass
 
     @abstractmethod

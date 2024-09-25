@@ -4,14 +4,13 @@ Authorization: Bearer {{letter-jwt}}
 
 
 {
-    "to_app_id": "app_002", //받는사람
-    "from_app_id" : "app_001",  //보내는사람 (랜덤 전송 혹은 전체 전송이면 None)
-    "is_anonymous": "False",    //익명인지
-    "writing_pad_id": "편지지1", // 편지지 id
-    "envelope_id": "편지봉투1",   // 편지봉투 id
-    "stamp_id":  "우표1", // 우표 id
-    "content": " 예시 편지내용입니다. ~~",  //편지내용
-    "title": "app_002 에게",    //편지 제목
-    "font": "NatoSansKr",   //편지 폰트
-    "will_arrive_at": "2024-09-22T10:08:47"  // 도착 시간을 명시할 경우 넣고, 없으면 None 보내면됩니다.
+  "to_app_id": "app_002",
+  "is_anonymous": "False",
+  "writing_pad_id": "Letter1",
+  "envelope_id": "envelope1",
+  "stamp_id": "stamp1",
+  "content": "This is an example letter content. ~~",
+  "title": "To app_002",
+  "font": "NATO_SANS_KR",
+  "will_arrive_at": "2024-09-22T10:08:47"
 }

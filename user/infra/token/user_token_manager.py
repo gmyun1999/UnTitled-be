@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 
 import jwt
 
+from common.interface.exceptions import UserNotFound
 from common.service.token.i_token_manager import ITokenManager
 from letter import settings
 from user.domain.user import User as UserVo
@@ -20,7 +21,7 @@ class UserTokenManager(ITokenManager):
         # TODO: DI 적용
         self.user_repo: IUserRepo = UserRepo()
 
-    def get_current_user(self, user_payload_vo: UserTokenPayload) -> UserVo | None:
+    def get_current_user(self, user_payload_vo: UserTokenPayload) -> UserVo:
         user_id = user_payload_vo.user_id
         admin_id = user_payload_vo.admin_id
 
@@ -31,6 +32,8 @@ class UserTokenManager(ITokenManager):
 
         user_filter = self.user_repo.Filter(user_id=user_id)
         user: UserVo | None = self.user_repo.get_user(filter=user_filter)
+        if user is None:
+            raise UserNotFound
 
         return user
 
