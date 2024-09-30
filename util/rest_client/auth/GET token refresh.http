@@ -1,0 +1,5 @@
+GET {{letter-host}}/user/token-refresh/
+Content-Type: application/json
+Authorization: Bearer {{letter-jwt}}
+
+# acees 토큰 만료시 새로운 access 토큰 및 refresh 토큰을 보내줌.

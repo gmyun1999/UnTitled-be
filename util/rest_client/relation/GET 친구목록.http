@@ -1,0 +1,5 @@
+GET {{letter-host}}/user/relationship/me/?relation=FRIEND&status=ACCEPT&page=1
+Content-Type: application/json
+Authorization: Bearer {{letter-jwt}}
+
+// 친구 목록 및 친구 수락 상태 및 등등 다양하게 할수있음.

@@ -8,26 +8,29 @@ from user.service.repository.i_user_repo import IUserRepo
 
 class UserRepo(IUserRepo):
     def get_user(self, filter: IUserRepo.Filter) -> UserVo | None:
-        user = User.objects.all()
-        if filter.user_id:
-            user = User.objects.get(id=filter.user_id)
-        if filter.app_id:
-            user = User.objects.get(app_id=filter.app_id)
+        try:
+            user = User.objects.all()
+            if filter.user_id:
+                user = user.get(id=filter.user_id)
+            if filter.app_id:
+                user = user.get(app_id=filter.app_id)
 
-        serializer = UserSerializer(user)
-        user_dict = serializer.data
+            serializer = UserSerializer(user)
+            user_dict = serializer.data
+            return UserVo.from_dict(dto=user_dict)
 
-        return UserVo.from_dto(dto=user_dict)
+        except User.DoesNotExist:
+            return None
 
     def get_bulk(self):
         pass
 
     def create(self, user_vo: UserVo) -> UserVo:
-        serializer = UserSerializer(data=user_vo.to_dto)
+        serializer = UserSerializer(data=user_vo.to_dict())
 
         if serializer.is_valid():
             serializer.save()
 
-            return user_vo.from_dto(serializer.data)
+            return user_vo.from_dict(serializer.data)
         else:
             raise DatabaseError(serializer.errors)

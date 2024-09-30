@@ -7,6 +7,7 @@ from pydantic import BaseModel, Field, field_validator
 from rest_framework import status
 from rest_framework.views import APIView
 
+from common.interface.http_response import standard_response
 from common.interface.validators import validate_body
 from common.service.token.i_token_manager import ITokenManager
 from lucky_letter.domain.letter import FontType
@@ -60,6 +61,10 @@ class LetterView(APIView):
             font=body.font,
             will_arrive_at=body.will_arrive_at,
         )
-        letter = letter_vo.to_dto()
-        return JsonResponse(status=status.HTTP_200_OK, data=letter)
+        letter = letter_vo.to_dict()
+        return standard_response(
+            message="send letter successfully",
+            data=letter,
+            http_status=status.HTTP_201_CREATED,
+        )
         # 뭐 보내주던가 하면될듯.

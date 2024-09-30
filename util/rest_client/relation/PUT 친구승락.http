@@ -1,0 +1,11 @@
+PUT {{letter-host}}/user/relationship/me/
+Content-Type: application/json
+Authorization: Bearer {{letter-jwt}}
+
+{
+    "relation" : "FRIEND",
+    "status" : "REJECT",   
+    "to_app_id": "app_004"
+}
+
+// 거절은 REJECT

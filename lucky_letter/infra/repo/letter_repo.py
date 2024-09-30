@@ -13,7 +13,7 @@ from lucky_letter.service.i_repo.i_letter_repo import ILetterRepo
 
 class LetterRepo(ILetterRepo):
     def create(self, letter_vo: LetterVo) -> LetterVo:
-        letter_dict = letter_vo.to_dto()
+        letter_dict = letter_vo.to_dict()
         serializer = LetterSerializer(data=letter_dict)
 
         serializer.is_valid(raise_exception=True)
@@ -25,7 +25,7 @@ class LetterRepo(ILetterRepo):
         """
         admin 용
         """
-        envelop_dict = envelop.to_dto()
+        envelop_dict = envelop.to_dict()
         serializer = EnvelopeSerializer(data=envelop_dict)
 
         serializer.is_valid(raise_exception=True)
@@ -37,7 +37,7 @@ class LetterRepo(ILetterRepo):
         """
         admin 용
         """
-        writing_pad_dict = writing_pad.to_dto()
+        writing_pad_dict = writing_pad.to_dict()
         serializer = WritingPadSerializer(data=writing_pad_dict)
 
         serializer.is_valid(raise_exception=True)
@@ -49,7 +49,7 @@ class LetterRepo(ILetterRepo):
         """
         admin 용
         """
-        stamp_dict = stamp.to_dto()
+        stamp_dict = stamp.to_dict()
         serializer = StampSerializer(data=stamp_dict)
 
         serializer.is_valid(raise_exception=True)

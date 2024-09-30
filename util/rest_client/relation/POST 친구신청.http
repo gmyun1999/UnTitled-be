@@ -1,0 +1,12 @@
+POST {{letter-host}}/user/relationship/me/
+Content-Type: application/json
+Authorization: Bearer {{letter-jwt}}
+
+{
+    "relation" : "FRIEND",
+    "status" : "PENDING",
+    "to_app_id": "app_004"
+}
+
+# 이미 친구 신청을 보냈으면 409 conflict 반환
+

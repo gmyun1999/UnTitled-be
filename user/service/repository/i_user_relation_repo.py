@@ -1,5 +1,7 @@
 from abc import ABCMeta, abstractmethod
 
+from user.domain.user import UserRelation as UserRelationVo
+
 
 class IUserRelationRepo(metaclass=ABCMeta):
     class Filter:
@@ -18,6 +20,14 @@ class IUserRelationRepo(metaclass=ABCMeta):
             self.user_id = user_id
 
     @abstractmethod
+    def check_exist(self, filter: Filter) -> bool:
+        pass
+
+    @abstractmethod
+    def get_one(self, filter: Filter) -> UserRelationVo | None:
+        pass
+
+    @abstractmethod
     def get_bulk(self, filter: Filter) -> list[dict[str, str]] | None:
         pass
 
@@ -25,4 +35,18 @@ class IUserRelationRepo(metaclass=ABCMeta):
     def fetch_relations_with_user(
         self, filter: Filter, exclude_fields: dict[str, list[str]] | None = None
     ) -> list[dict[str, str]] | None:
+        pass
+
+    @abstractmethod
+    def create(self, UserRelation_vo: UserRelationVo) -> UserRelationVo:
+        """
+        관계를 새로 생성함.
+        """
+        pass
+
+    @abstractmethod
+    def update(self, existed_user_relation_id: str, filter: Filter) -> UserRelationVo:
+        """
+        filter 에 있는 필드만 update 시킴.
+        """
         pass

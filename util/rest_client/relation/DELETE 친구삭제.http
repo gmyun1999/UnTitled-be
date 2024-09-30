@@ -1,0 +1,11 @@
+DELETE {{letter-host}}/user/relationship/me/
+Content-Type: application/json
+Authorization: Bearer {{letter-jwt}}
+
+{
+    "relation" : "FRIEND",
+    "to_app_id": "app_004",
+}
+
+// 내가 삭제하면 친구의 친구목록에도 삭제됨. 내가 친삭당한지를 알수있음.
+

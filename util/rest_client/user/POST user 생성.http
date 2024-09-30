@@ -1,0 +1,9 @@
+POSt {{letter-host}}/user/
+Content-Type: application/json
+
+{
+    "app_id": "dbsrbals24",
+    "name": "윤규민"
+}
+
+# access token이랑 refresh 넘겨줍니다.

@@ -29,9 +29,9 @@ class User(Domain):
 
     id: str
     app_id: str
-    name: str | None
-    created_at: str
-    updated_at: str
+    name: str
+    created_at: str | None = None
+    updated_at: str | None = None
 
 
 @dataclass
@@ -53,5 +53,5 @@ class UserRelation(Domain):
     from_id: str
     relation_type: RelationType
     relation_status: RelationStatus
-    created_at: str
-    updated_at: str
+    created_at: str | None = None
+    updated_at: str | None = None

@@ -1,7 +1,10 @@
+import uuid
+
 from common.service.token.i_token_manager import ITokenManager
 from user.domain.user import RelationStatus, RelationType
 from user.domain.user import User as UserVo
 from user.domain.user import UserRelation as UserRelationVo
+from user.domain.user import UserRelation as c
 from user.infra.repository.user_relation_repo import UserRelationRepo
 from user.infra.repository.user_repo import UserRepo
 from user.infra.token.user_token_manager import UserTokenManager
@@ -14,6 +17,10 @@ class UserService:
         # TODO: DI 적용
         self.user_token_manager: ITokenManager = UserTokenManager()
         self.user_repo: IUserRepo = UserRepo()
+
+    def get_user_by_app_id(self, app_id: str) -> UserVo | None:
+        filter = self.user_repo.Filter(app_id=app_id)
+        return self.user_repo.get_user(filter=filter)
 
     def check_duplicate_app_id(self, app_id: str) -> bool:
         """
@@ -54,7 +61,7 @@ class UserService:
 class UserRelationService:
     def __init__(self) -> None:
         # TODO: Di 적용
-        self.user_relation: IUserRelationRepo = UserRelationRepo()
+        self.user_relation_repo: IUserRelationRepo = UserRelationRepo()
 
     def get_relations(
         self,
@@ -65,12 +72,12 @@ class UserRelationService:
         """
         관계 정보를 가져오는 함수.
         """
-        relation_filter = self.user_relation.Filter(
+        relation_filter = self.user_relation_repo.Filter(
             relation_status=relation_status,
             relation_type=relation_type,
             user_id=user_id,
         )
-        return self.user_relation.fetch_relations_with_user(
+        return self.user_relation_repo.fetch_relations_with_user(
             filter=relation_filter,
             exclude_fields={
                 UserRelationVo.FIELD_ID: [],
@@ -87,4 +94,59 @@ class UserRelationService:
                     UserVo.FIELD_UPDATED_AT,
                 ],
             },
+        )
+
+    def create_relation(
+        self,
+        to_id: str,
+        from_id: str,
+        relation_status: RelationStatus,
+        relation_type: RelationType = RelationType.FRIEND,
+    ) -> UserRelationVo | None:
+        user_relation_vo = UserRelationVo(
+            id=str(uuid.uuid4()),
+            to_id=to_id,
+            from_id=from_id,
+            relation_status=relation_status,
+            relation_type=relation_type,
+        )
+        filter = self.user_relation_repo.Filter(
+            to_id=to_id,
+            from_id=from_id,
+            relation_status=relation_status,
+            relation_type=relation_type,
+        )
+        is_exist = self.user_relation_repo.check_exist(filter)
+
+        if is_exist:
+            return None
+
+        return self.user_relation_repo.create(UserRelation_vo=user_relation_vo)
+
+    def update_my_relation(
+        self,
+        my_id: str,
+        requested_id: str,
+        relation_status: RelationStatus,
+        relation_type: RelationType = RelationType.FRIEND,
+    ) -> UserRelationVo | None:
+        filter = self.user_relation_repo.Filter(
+            to_id=my_id,
+            from_id=requested_id,
+            relation_status=RelationStatus.PENDING,
+            relation_type=RelationType.FRIEND,
+        )
+        user_relation = self.user_relation_repo.get_one(filter=filter)
+
+        if user_relation is None:
+            return None
+
+        update_filter = self.user_relation_repo.Filter(
+            to_id=my_id,
+            from_id=requested_id,
+            relation_status=relation_status,
+            relation_type=relation_type,
+        )
+        return self.user_relation_repo.update(
+            existed_user_relation_id=user_relation.id, filter=update_filter
         )
