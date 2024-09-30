@@ -170,7 +170,7 @@ class MyRelationshipsView(APIView):
 
         if to_user is None:
             return standard_response(
-                message="receiver not exist", http_status=status.HTTP_404_NOT_FOUND
+                message="to_id is not exist", http_status=status.HTTP_404_NOT_FOUND
             )
 
         user_relation = self.user_relation_service.create_relation(
@@ -182,7 +182,7 @@ class MyRelationshipsView(APIView):
 
         if user_relation is None:
             return standard_response(
-                message="already create same relation",
+                message="already request relation or have relation",
                 http_status=status.HTTP_409_CONFLICT,
             )
         return standard_response(
@@ -210,7 +210,7 @@ class MyRelationshipsView(APIView):
         to_user = self.user_service.get_user_by_app_id(app_id=body.to_app_id)
         if to_user is None:
             return standard_response(
-                message="receiver not exist", http_status=status.HTTP_404_NOT_FOUND
+                message="to_id is not exist", http_status=status.HTTP_404_NOT_FOUND
             )
 
         user_relation = self.user_relation_service.update_my_relation(
@@ -227,6 +227,33 @@ class MyRelationshipsView(APIView):
 
         return standard_response(
             message="update relation", http_status=status.HTTP_200_OK
+        )
+
+    @validate_token(roles=[UserRole.USER], validate_type=UserTokenType.ACCESS)
+    @validate_body(DeleteRelationParams)
+    def delete(
+        self,
+        request: HttpRequest,
+        token_payload: UserTokenPayload,
+        body: UpdateRelationParams,
+    ):
+        current_user = self.user_token_manager.get_current_user(
+            user_payload_vo=token_payload
+        )
+        to_user = self.user_service.get_user_by_app_id(app_id=body.to_app_id)
+        if to_user is None:
+            return standard_response(
+                message="to_id is not exist", http_status=status.HTTP_404_NOT_FOUND
+            )
+
+        _ = self.user_relation_service.delete_my_relation(
+            my_id=current_user.id,
+            to_id=to_user.id,
+            relation_status=RelationStatus.ACCEPT.value,
+            relation_type=body.relation,
+        )
+        return standard_response(
+            message="delete relation", http_status=status.HTTP_200_OK
         )
 
 

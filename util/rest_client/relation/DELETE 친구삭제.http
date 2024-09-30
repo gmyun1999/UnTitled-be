@@ -4,8 +4,9 @@ Authorization: Bearer {{letter-jwt}}
 
 {
     "relation" : "FRIEND",
-    "to_app_id": "app_004",
+    "to_app_id": "app_004"
 }
 
 // 내가 삭제하면 친구의 친구목록에도 삭제됨. 내가 친삭당한지를 알수있음.
+// 친구가 아닌데 친구 삭제를 하는경우 아무일도 일어나지않음 (물론 프론트단에서 그런상황을 안만들겠지만)
 

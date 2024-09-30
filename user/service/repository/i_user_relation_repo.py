@@ -1,5 +1,6 @@
 from abc import ABCMeta, abstractmethod
 
+from user.domain.user import RelationStatus, RelationType
 from user.domain.user import UserRelation as UserRelationVo
 
 
@@ -18,6 +19,10 @@ class IUserRelationRepo(metaclass=ABCMeta):
             self.to_id = to_id
             self.from_id = from_id
             self.user_id = user_id
+
+    @abstractmethod
+    def check_friend_request_or_friend(self, to_id: str, from_id: str) -> bool:
+        pass
 
     @abstractmethod
     def check_exist(self, filter: Filter) -> bool:
@@ -49,4 +54,14 @@ class IUserRelationRepo(metaclass=ABCMeta):
         """
         filter 에 있는 필드만 update 시킴.
         """
+        pass
+
+    @abstractmethod
+    def delete_friendship(
+        self,
+        to_id: str,
+        from_id: str,
+        relation_type: str = RelationType.FRIEND.value,
+        relation_status: str = RelationStatus.ACCEPT.value,
+    ) -> int:
         pass

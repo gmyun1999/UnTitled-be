@@ -9,4 +9,5 @@ Authorization: Bearer {{letter-jwt}}
 }
 
 # 이미 친구 신청을 보냈으면 409 conflict 반환
-
+# 이미 친구 상태여도 409 conflict 반환
+# 상대가 친구 거절했으면 다시 보낼수있음.

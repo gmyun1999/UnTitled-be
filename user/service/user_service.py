@@ -110,13 +110,10 @@ class UserRelationService:
             relation_status=relation_status,
             relation_type=relation_type,
         )
-        filter = self.user_relation_repo.Filter(
-            to_id=to_id,
-            from_id=from_id,
-            relation_status=relation_status,
-            relation_type=relation_type,
+
+        is_exist = self.user_relation_repo.check_friend_request_or_friend(
+            to_id=to_id, from_id=from_id
         )
-        is_exist = self.user_relation_repo.check_exist(filter)
 
         if is_exist:
             return None
@@ -149,4 +146,18 @@ class UserRelationService:
         )
         return self.user_relation_repo.update(
             existed_user_relation_id=user_relation.id, filter=update_filter
+        )
+
+    def delete_my_relation(
+        self,
+        my_id: str,
+        to_id: str,
+        relation_type: str = RelationType.FRIEND.value,
+        relation_status: str = RelationStatus.ACCEPT.value,
+    ):
+        return self.user_relation_repo.delete_friendship(
+            to_id=my_id,
+            from_id=to_id,
+            relation_type=relation_type,
+            relation_status=relation_status,
         )

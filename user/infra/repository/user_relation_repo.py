@@ -1,6 +1,7 @@
 from django.db import DatabaseError
 from django.db.models import Q
 
+from user.domain.user import RelationStatus, RelationType
 from user.domain.user import UserRelation as UserRelationVo
 from user.infra.models.serializer import (
     UserJoinRelationSerializer,
@@ -28,6 +29,35 @@ class UserRelationRepo(IUserRelationRepo):
             )
 
         return user_relation.exists()
+
+    def check_friend_request_or_friend(self, to_id: str, from_id: str) -> bool:
+        """
+        내가 친구를 요청했거나, 이미 친구 관계인 경우를 찾음.
+
+        - PENDING 상태: 특정 방향(to_id에서 from_id로)으로 존재해야 함.
+        - ACCEPT 상태: 방향에 상관없이 존재하면 됨.
+        """
+        q_objects = (
+            Q(
+                to_id=to_id,
+                from_id=from_id,
+                relation_status=RelationStatus.PENDING.value,
+            )
+            | Q(
+                to_id=to_id,
+                from_id=from_id,
+                relation_status=RelationStatus.ACCEPT.value,
+            )
+            | Q(
+                to_id=from_id,
+                from_id=to_id,
+                relation_status=RelationStatus.ACCEPT.value,
+            )
+        )
+
+        exists = UserRelation.objects.filter(q_objects).exists()
+
+        return exists
 
     def get_one(self, filter: IUserRelationRepo.Filter) -> UserRelationVo | None:
         user_relation = UserRelation.objects.all()
@@ -145,3 +175,32 @@ class UserRelationRepo(IUserRelationRepo):
             return UserRelationVo.from_dict(dicted_data)
         else:
             raise DatabaseError(serializer.errors)
+
+    def delete_friendship(
+        self,
+        to_id: str,
+        from_id: str,
+        relation_type: str = RelationType.FRIEND.value,
+        relation_status: str = RelationStatus.ACCEPT.value,
+    ) -> int:
+        """
+        두 사용자 간에 ACCEPT 상태인 관계를 삭제
+        - (to_id, from_id, ACCEPT)
+        - (from_id, to_id, ACCEPT)
+        삭제된 수 반환
+        """
+        q_objects = Q(
+            to_id=to_id,
+            from_id=from_id,
+            relation_status=relation_status,
+            relation_type=relation_type,
+        ) | Q(
+            to_id=from_id,
+            from_id=to_id,
+            relation_status=relation_status,
+            relation_type=relation_type,
+        )
+
+        deleted_count, _ = UserRelation.objects.filter(q_objects).delete()
+
+        return deleted_count
