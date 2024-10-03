@@ -1,0 +1,5 @@
+GET {{letter-host}}/me/letter-box/received/
+Content-Type: application/json
+Authorization: Bearer {{letter-jwt}}
+
+

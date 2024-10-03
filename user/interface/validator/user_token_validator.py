@@ -1,6 +1,6 @@
 from functools import wraps
 
-from django.http import JsonResponse
+from django.http import HttpRequest, JsonResponse
 from rest_framework import status
 
 from common.response_msg import MESSAGE
@@ -13,11 +13,16 @@ from user.infra.token.user_token_parser import UserTokenParser
 def validate_token(
     roles: list = UserRoles.USER_ROLES,
     validate_type: str = UserTokenType.ACCESS,
+    view_type: str = "class",
 ):
     def decorated_func(f):
         @wraps(f)
         def wrapper(*args, **kwargs):
-            request = args[1]
+            if view_type == "class":
+                request = args[1]
+            elif view_type == "function":
+                request = args[0]
+
             headers = request.headers
 
             # TODO: DI 적용

@@ -1,0 +1,7 @@
+GET {{letter-host}}/me/letter-box/2
+Content-Type: application/json
+Authorization: Bearer {{letter-jwt}}
+
+
+# 받은/보낸 편지 가져오기에서 가져온 id 입니다.
+# letter_id의 id 아닙니다.

@@ -1,13 +1,17 @@
 import uuid
+from typing import Any
 
 from common.service.token.i_token_manager import ITokenManager
 from user.domain.user import RelationStatus, RelationType
 from user.domain.user import User as UserVo
 from user.domain.user import UserRelation as UserRelationVo
 from user.domain.user import UserRelation as c
+from user.domain.user_letter_box import UserLetterBox, UserLetterBoxType
+from user.infra.repository.user_letter_box import UserLetterBoxRepo
 from user.infra.repository.user_relation_repo import UserRelationRepo
 from user.infra.repository.user_repo import UserRepo
 from user.infra.token.user_token_manager import UserTokenManager
+from user.service.repository.i_user_letter_box import IUserLetterBoxRepo
 from user.service.repository.i_user_relation_repo import IUserRelationRepo
 from user.service.repository.i_user_repo import IUserRepo
 
@@ -161,3 +165,39 @@ class UserRelationService:
             relation_type=relation_type,
             relation_status=relation_status,
         )
+
+
+class UserLetterBoxService:
+    def __init__(self):
+        self.letter_box_repo: IUserLetterBoxRepo = UserLetterBoxRepo()
+
+    def fetch_letter(
+        self, letter_id: str
+    ) -> tuple[dict[str, Any], str] | tuple[None, None]:
+        return self.letter_box_repo.get_my_letter(letter_id=letter_id)
+
+    def fetch_sended_letter(self, user_id: str) -> list[dict[str, Any]] | None:
+        return self.letter_box_repo.fetch_my_letters(
+            user_id=user_id, letter_type=UserLetterBoxType.SENT
+        )
+
+    def fetch_received_letter(self, user_id: str) -> list[dict[str, Any]] | None:
+        return self.letter_box_repo.fetch_my_letters(
+            user_id=user_id, letter_type=UserLetterBoxType.RECEIVED
+        )
+
+    def store_letter(self, letter_id: str, user_id: str, type: UserLetterBoxType):
+        user_letter_box_vo = UserLetterBox(
+            id=str(uuid.uuid4()),
+            user_id=user_id,
+            letter_id=letter_id,
+            type=type,
+            is_read=False,
+        )
+        return self.letter_box_repo.store_letter_in_letter_box(user_letter_box_vo)
+
+    def delete_sended_letter(self, letter_id: str, user_id: str):
+        pass
+
+    def delete_received_letter(self, letter_id: str, user_id: str):
+        pass

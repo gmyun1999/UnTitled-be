@@ -4,13 +4,12 @@ Authorization: Bearer {{letter-jwt}}
 
 
 {
-  "to_app_id": "app_002",
+  "to_app_id": "app_003",
   "is_anonymous": "False",
   "writing_pad_id": "Letter1",
   "envelope_id": "envelope1",
   "stamp_id": "stamp1",
   "content": "This is an example letter content. ~~",
   "title": "To app_002",
-  "font": "NATO_SANS_KR",
-  "will_arrive_at": "2024-09-22T10:08:47"
+  "font": "NATO_SANS_KR"
 }

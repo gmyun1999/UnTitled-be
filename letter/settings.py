@@ -97,6 +97,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "user",
     "lucky_letter",
+    "notification",
 ]
 
 MIDDLEWARE = [

@@ -1,4 +1,4 @@
-GET {{letter-host}}/user/relationship/me/?relation=FRIEND&status=ACCEPT&page=1
+GET {{letter-host}}/me/relationship/?relation=FRIEND&status=ACCEPT
 Content-Type: application/json
 Authorization: Bearer {{letter-jwt}}
 

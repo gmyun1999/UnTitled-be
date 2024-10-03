@@ -1,4 +1,4 @@
-DELETE {{letter-host}}/user/relationship/me/
+DELETE {{letter-host}}/me/relationship/
 Content-Type: application/json
 Authorization: Bearer {{letter-jwt}}
 
