@@ -34,7 +34,8 @@ class LetterView(APIView):
 
     @dataclass
     class LetterBody(BaseModel):
-        to_app_id: str = Field(max_length=36)  # 아직은 전체전송 막아두겠음
+        to_app_id: str = Field(max_length=36)  # 아직은 전체전송 막아두겠음Z
+        letter_group_id: str | None = Field(max_length=36, default=None)
         is_anonymous: bool = Field(default=False)
         writing_pad_id: str = Field(max_length=36)
         envelope_id: str = Field(max_length=36)
@@ -68,6 +69,7 @@ class LetterView(APIView):
 
         letter_vo = self.letter_service.create_letter(
             to_app_id=body.to_app_id,
+            letter_group_id=body.letter_group_id,
             from_app_id=user.app_id,
             is_anonymous=body.is_anonymous,
             writing_pad_id=body.writing_pad_id,

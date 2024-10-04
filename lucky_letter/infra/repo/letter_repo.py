@@ -1,14 +1,26 @@
 from lucky_letter.domain.letter import Envelope as EnvelopeVo
 from lucky_letter.domain.letter import Letter as LetterVo
+from lucky_letter.domain.letter import LetterGroup as LetterGroupVo
 from lucky_letter.domain.letter import Stamp as StampVo
 from lucky_letter.domain.letter import WritingPad as WritingPadVo
 from lucky_letter.infra.models.serializers import (
     EnvelopeSerializer,
+    LetterGroupSerializer,
     LetterSerializer,
     StampSerializer,
     WritingPadSerializer,
 )
-from lucky_letter.service.i_repo.i_letter_repo import ILetterRepo
+from lucky_letter.service.i_repo.i_letter_repo import ILetterGroupRepo, ILetterRepo
+
+
+class LetterGroupRepo(ILetterGroupRepo):
+    def create(self, letter_group_vo: LetterGroupVo) -> LetterGroupVo:
+        letter_group_dict = letter_group_vo.to_dict()
+        serializer = LetterGroupSerializer(data=letter_group_dict)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return letter_group_vo
 
 
 class LetterRepo(ILetterRepo):

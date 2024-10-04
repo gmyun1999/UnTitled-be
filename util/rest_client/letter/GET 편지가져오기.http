@@ -1,4 +1,4 @@
-GET {{letter-host}}/me/letter-box/2
+GET {{letter-host}}/me/letter-box/8
 Content-Type: application/json
 Authorization: Bearer {{letter-jwt}}
 

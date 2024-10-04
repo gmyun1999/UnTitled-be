@@ -1,5 +1,11 @@
 from common.infra.serializer import DynamicFieldsModelSerializer
-from lucky_letter.infra.models.letter_model import Envelope, Letter, Stamp, WritingPad
+from lucky_letter.infra.models.letter_model import (
+    Envelope,
+    Letter,
+    LetterGroup,
+    Stamp,
+    WritingPad,
+)
 
 
 class WritingPadSerializer(DynamicFieldsModelSerializer):
@@ -23,4 +29,10 @@ class StampSerializer(DynamicFieldsModelSerializer):
 class LetterSerializer(DynamicFieldsModelSerializer):
     class Meta:
         model = Letter
+        fields = "__all__"
+
+
+class LetterGroupSerializer(DynamicFieldsModelSerializer):
+    class Meta:
+        model = LetterGroup
         fields = "__all__"
