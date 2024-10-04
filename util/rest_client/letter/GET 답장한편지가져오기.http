@@ -1,0 +1,7 @@
+GET {{letter-host}}/letter/c7291e18-a337-4ed8-b0c3-8cad96fa3410/reply
+Content-Type: application/json
+Authorization: Bearer {{letter-jwt}}
+
+
+
+# letter_id 를 가지고, 해당 letter_id에 답한 letter 가져오기.

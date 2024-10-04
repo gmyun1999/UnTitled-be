@@ -1,14 +1,12 @@
 from dataclasses import dataclass
-from datetime import datetime
 
 import bleach
-from django.http import JsonResponse
 from pydantic import BaseModel, Field, field_validator
 from rest_framework import status
 from rest_framework.views import APIView
 
 from common.interface.http_response import standard_response
-from common.interface.validators import validate_body, validate_query_params
+from common.interface.validators import validate_body
 from common.service.token.i_token_manager import ITokenManager
 from lucky_letter.domain.letter import FontType
 from lucky_letter.service.letter_service import LetterService
@@ -20,8 +18,46 @@ from user.interface.validator.user_token_validator import validate_token
 from user.service.user_service import UserLetterBoxService, UserService
 
 
-class LettersView(APIView):
-    pass
+class ReplyLetterView(APIView):
+    def __init__(self):
+        self.letter_service = LetterService()
+        self.user_letter_box_service = UserLetterBoxService()
+        self.user_service = UserService()
+        # TODO: DI 적용
+        self.token_manager: ITokenManager = UserTokenManager()
+
+    @validate_token(roles=[UserRole.USER], validate_type=UserTokenType.ACCESS)
+    def get(self, request, letter_id: str, token_payload: UserTokenPayload):
+        user = self.token_manager.get_current_user(token_payload)
+        letter = self.letter_service.get_letter_by_id(letter_id=letter_id)
+        # letter_id가 없을때
+        if letter is None:
+            return standard_response(
+                message="letter_id is not exist",
+                data="",
+                http_status=status.HTTP_400_BAD_REQUEST,
+            )
+        # letter_id 를 보낸사람, 혹은 받은 사람이 아닐때
+        if letter.to_app_id != user.app_id and letter.from_app_id != user.app_id:
+            return standard_response(
+                message="permission denied",
+                data="",
+                http_status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        letter_vo = self.letter_service.get_reply_letter(target_letter_id=letter_id)
+        if letter_vo is None:
+            return standard_response(
+                message="no reply letter",
+                data="",
+                http_status=status.HTTP_200_OK,
+            )
+
+        return standard_response(
+            message="fetch reply letter",
+            data=letter_vo.to_dict(),
+            http_status=status.HTTP_200_OK,
+        )
 
 
 class LetterView(APIView):
@@ -35,7 +71,7 @@ class LetterView(APIView):
     @dataclass
     class LetterBody(BaseModel):
         to_app_id: str = Field(max_length=36)  # 아직은 전체전송 막아두겠음Z
-        letter_group_id: str | None = Field(max_length=36, default=None)
+        to_letter_id: str | None = Field(max_length=36, default=None)  # 답장이 아닌경우 None
         is_anonymous: bool = Field(default=False)
         writing_pad_id: str = Field(max_length=36)
         envelope_id: str = Field(max_length=36)
@@ -59,6 +95,7 @@ class LetterView(APIView):
     def post(self, request, token_payload: UserTokenPayload, body: LetterBody):
         user = self.token_manager.get_current_user(token_payload)
 
+        # 보내는 사람이 존재하지않는 경우
         receiver = self.user_service.get_user_by_app_id(body.to_app_id)
         if receiver is None:
             return standard_response(
@@ -67,9 +104,37 @@ class LetterView(APIView):
                 http_status=status.HTTP_400_BAD_REQUEST,
             )
 
+        # 답장인경우
+        if body.to_letter_id is not None:
+            letter = self.letter_service.get_letter_by_id(letter_id=body.to_letter_id)
+            # 답장을 보낼 letter_id가 존재하지않는경우
+            if letter is None:
+                return standard_response(
+                    message="to_letter is not exist",
+                    data="",
+                    http_status=status.HTTP_400_BAD_REQUEST,
+                )
+            # 답장을 보낼 letter_id의 주인이랑 내가 보낼 편지의 수신자랑 다른경우
+            if letter.from_app_id != body.to_app_id or letter.to_app_id != user.app_id:
+                return standard_response(
+                    message="to_app_id is not owner to_letter_id",
+                    data="",
+                    http_status=status.HTTP_400_BAD_REQUEST,
+                )
+            # 이미 답장이 있는경우
+            reply_letter = self.letter_service.get_reply_letter(
+                target_letter_id=letter.id
+            )
+            if reply_letter is not None:
+                return standard_response(
+                    message="already have reply",
+                    data="",
+                    http_status=status.HTTP_400_BAD_REQUEST,
+                )
+
         letter_vo = self.letter_service.create_letter(
             to_app_id=body.to_app_id,
-            letter_group_id=body.letter_group_id,
+            to_letter_id=body.to_letter_id,
             from_app_id=user.app_id,
             is_anonymous=body.is_anonymous,
             writing_pad_id=body.writing_pad_id,

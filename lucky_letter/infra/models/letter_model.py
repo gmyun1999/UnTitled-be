@@ -37,21 +37,17 @@ class Stamp(models.Model):
         return self.name
 
 
-class LetterGroup(models.Model):
+class LetterRelation(models.Model):
     id = models.CharField(primary_key=True, max_length=36)
-    name = models.CharField(max_length=36)
-    created_at = models.DateTimeField(auto_now_add=True)
+    target_letter_id = models.CharField(max_length=36)
+    reply_letter_id = models.CharField(max_length=36)
 
     class Meta:
-        db_table = "LetterGroup"
-        indexes = [
-            models.Index(fields=["created_at"]),
-        ]
+        db_table = "LetterRelation"
 
 
 class Letter(models.Model):
     id = models.CharField(primary_key=True, max_length=36)
-    letter_group_id = models.CharField(max_length=36, null=True)
     to_app_id = models.CharField(max_length=36, null=True, default=None)
     from_app_id = models.CharField(max_length=36)
     is_anonymous = models.BooleanField(default=False)
@@ -70,7 +66,6 @@ class Letter(models.Model):
         indexes = [
             models.Index(fields=["to_app_id"]),
             models.Index(fields=["from_app_id"]),
-            models.Index(fields=["letter_group_id"]),
             models.Index(fields=["created_at"]),
         ]
 

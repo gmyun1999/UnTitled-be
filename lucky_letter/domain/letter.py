@@ -4,20 +4,20 @@ from enum import StrEnum
 from common.domain import Domain
 
 
-@dataclass
-class LetterGroup(Domain):
-    FIELD_ID = "id"
-    FIELD_NAME = "name"
-    FIELD_CREATED_AT = "created_at"
-
-    id: str
-    name: str
-    created_at: str
-
-
 class FontType(StrEnum):
     NATO_SANS_KR = "NATO_SANS_KR"
     # 어떤것들이 있을거임
+
+
+@dataclass
+class LetterRelation(Domain):
+    FIELD_ID = "id"
+    FIELD_TARGET_LETTER_ID = "target_letter_id"
+    FIELD_REPLY_LETTER_ID = "reply_letter_id"
+
+    id: str
+    target_letter_id: str
+    reply_letter_id: str
 
 
 @dataclass
@@ -29,7 +29,6 @@ class Letter(Domain):
     FIELD_ID = "id"
     FIELD_TO_APP_ID = "to_app_id"
     FIELD_FROM_APP_ID = "from_app_id"
-    FIELD_LETTER_GROUP_ID = "letter_group_id"
     FIELD_IS_ANONYMOUS = "is_anonymous"
     FIELD_WRITING_PAD_ID = "writing_pad_id"
     FIELD_ENVELOPE_ID = "envelope_id"
@@ -41,7 +40,6 @@ class Letter(Domain):
 
     id: str
     to_app_id: str | None  # 특정 상대에게 보내는게 아닌 경우 None
-    letter_group_id: str
     from_app_id: str
     is_anonymous: bool
     writing_pad_id: str  # 편지지

@@ -18,6 +18,10 @@ class IUserLetterBoxRepo(metaclass=ABCMeta):
         pass
 
     @abstractmethod
+    def letter_mark_as_read(self, letter_id: str) -> bool:
+        pass
+
+    @abstractmethod
     def store_letter_in_letter_box(
         self,
         UserLetterBox_vo: UserLetterBox,

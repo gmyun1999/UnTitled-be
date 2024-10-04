@@ -2,7 +2,7 @@ from common.infra.serializer import DynamicFieldsModelSerializer
 from lucky_letter.infra.models.letter_model import (
     Envelope,
     Letter,
-    LetterGroup,
+    LetterRelation,
     Stamp,
     WritingPad,
 )
@@ -32,7 +32,7 @@ class LetterSerializer(DynamicFieldsModelSerializer):
         fields = "__all__"
 
 
-class LetterGroupSerializer(DynamicFieldsModelSerializer):
+class LetterRelationSerializer(DynamicFieldsModelSerializer):
     class Meta:
-        model = LetterGroup
+        model = LetterRelation
         fields = "__all__"

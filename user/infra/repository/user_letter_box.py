@@ -28,8 +28,18 @@ class UserLetterBoxRepo(IUserLetterBoxRepo):
             serializer = NestedUserLetterBoxSerializer(letter)
             dicted_data = serializer.data
             return dicted_data, dicted_data[UserLetterBoxVo.FIELD_USER_ID]
+
         except UserLetterBox.DoesNotExist:
             return None, None
+
+    def letter_mark_as_read(self, letter_id: str) -> bool:
+        try:
+            letter = UserLetterBox.objects.get(id=letter_id)
+            letter.mark_as_read()
+            return True
+
+        except UserLetterBox.DoesNotExist:
+            return False
 
     def store_letter_in_letter_box(
         self,

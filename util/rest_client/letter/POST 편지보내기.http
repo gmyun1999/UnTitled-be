@@ -4,7 +4,8 @@ Authorization: Bearer {{letter-jwt}}
 
 
 {
-  "to_app_id": "app_004",
+  "to_app_id": "app_002",
+  "to_letter_id": "4123123",
   "is_anonymous": "False",
   "writing_pad_id": "Letter1",
   "envelope_id": "envelope1",
@@ -14,11 +15,11 @@ Authorization: Bearer {{letter-jwt}}
   "font": "NATO_SANS_KR"
 }
 
-# 만약 답장이 아니라 편지를 처음 보내는거라면 letter_group_id를 넘겨주지않는다
-# 만약 답장인경우 답을 해야하는 편지의 letter_group_id에 맞게 넘겨준다.
+# 만약 답장이 아니라 편지를 처음 보내는거라면 to_letter_id를 넘겨주지않는다
+# 만약 답장인경우 답을 해야하는 편지의 letter_id에 맞게 넘겨준다.
 # {
 #   "to_app_id": "app_003",
-#   "letter_group_id": "asdasd",
+#   "to_letter_id": "asdasd",
 #   "is_anonymous": "False",
 #   "writing_pad_id": "Letter1",
 #   "envelope_id": "envelope1",
