@@ -5,7 +5,7 @@ Authorization: Bearer {{letter-jwt}}
 {
     "relation" : "FRIEND",
     "status" : "REJECT",   
-    "to_app_id": "app_004"
+    "to_app_id": "app_2"
 }
 
 // 거절은 REJECT

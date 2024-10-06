@@ -27,8 +27,8 @@ class Letter(Domain):
     """
 
     FIELD_ID = "id"
-    FIELD_TO_APP_ID = "to_app_id"
-    FIELD_FROM_APP_ID = "from_app_id"
+    FIELD_TO_USER_ID = "to_user_id"
+    FIELD_FROM_USER_ID = "from_user_id"
     FIELD_IS_ANONYMOUS = "is_anonymous"
     FIELD_WRITING_PAD_ID = "writing_pad_id"
     FIELD_ENVELOPE_ID = "envelope_id"
@@ -39,8 +39,8 @@ class Letter(Domain):
     FIELD_WILL_ARRIVE_AT = "will_arrive_at"
 
     id: str
-    to_app_id: str | None  # 특정 상대에게 보내는게 아닌 경우 None
-    from_app_id: str
+    to_user_id: str
+    from_user_id: str
     is_anonymous: bool
     writing_pad_id: str  # 편지지
     envelope_id: str  # 편지봉투

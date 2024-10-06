@@ -4,14 +4,14 @@ Authorization: Bearer {{letter-jwt}}
 
 
 {
-  "to_app_id": "app_002",
-  "to_letter_id": "4123123",
+  "to_app_id": "app_1",
+  "to_letter_id": "b89c6607-519a-4d88-8e93-9615b19c46fe",
   "is_anonymous": "False",
-  "writing_pad_id": "Letter1",
-  "envelope_id": "envelope1",
-  "stamp_id": "stamp1",
-  "content": "group test1",
-  "title": "To app_002 - group test1",
+  "writing_pad_id": "1",
+  "envelope_id": "1",
+  "stamp_id": "1",
+  "content": "reply",
+  "title": "To app_001 - reply",
   "font": "NATO_SANS_KR"
 }
 

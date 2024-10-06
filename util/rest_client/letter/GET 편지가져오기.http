@@ -1,7 +1,7 @@
-GET {{letter-host}}/me/letter-box/8
+GET {{letter-host}}/me/letter-box/b89c6607-519a-4d88-8e93-9615b19c46fe
 Content-Type: application/json
 Authorization: Bearer {{letter-jwt}}
 
 
-# 받은/보낸 편지 가져오기에서 가져온 id 입니다.
-# letter_id의 id 아닙니다.
+# letter_id 를 넣기. letter-box의 id 아닙니다.
+

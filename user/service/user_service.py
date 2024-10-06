@@ -171,10 +171,8 @@ class UserLetterBoxService:
     def __init__(self):
         self.letter_box_repo: IUserLetterBoxRepo = UserLetterBoxRepo()
 
-    def fetch_letter(
-        self, letter_id: str
-    ) -> tuple[dict[str, Any], str] | tuple[None, None]:
-        return self.letter_box_repo.get_my_letter(letter_id=letter_id)
+    def fetch_letter(self, letter_id: str, user_id: str) -> dict[str, Any] | None:
+        return self.letter_box_repo.get_my_letter(letter_id=letter_id, user_id=user_id)
 
     def fetch_sended_letter(self, user_id: str) -> list[dict[str, Any]] | None:
         return self.letter_box_repo.fetch_my_letters(

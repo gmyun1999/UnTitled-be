@@ -38,7 +38,7 @@ class ReplyLetterView(APIView):
                 http_status=status.HTTP_400_BAD_REQUEST,
             )
         # letter_id 를 보낸사람, 혹은 받은 사람이 아닐때
-        if letter.to_app_id != user.app_id and letter.from_app_id != user.app_id:
+        if letter.to_user_id != user.id and letter.from_user_id != user.id:
             return standard_response(
                 message="permission denied",
                 data="",
@@ -115,12 +115,13 @@ class LetterView(APIView):
                     http_status=status.HTTP_400_BAD_REQUEST,
                 )
             # 답장을 보낼 letter_id의 주인이랑 내가 보낼 편지의 수신자랑 다른경우
-            if letter.from_app_id != body.to_app_id or letter.to_app_id != user.app_id:
+            if letter.from_user_id != receiver.id or letter.to_user_id != user.id:
                 return standard_response(
                     message="to_app_id is not owner to_letter_id",
                     data="",
                     http_status=status.HTTP_400_BAD_REQUEST,
                 )
+
             # 이미 답장이 있는경우
             reply_letter = self.letter_service.get_reply_letter(
                 target_letter_id=letter.id
@@ -133,9 +134,9 @@ class LetterView(APIView):
                 )
 
         letter_vo = self.letter_service.create_letter(
-            to_app_id=body.to_app_id,
+            to_user=receiver,
             to_letter_id=body.to_letter_id,
-            from_app_id=user.app_id,
+            from_user=user,
             is_anonymous=body.is_anonymous,
             writing_pad_id=body.writing_pad_id,
             envelope_id=body.envelope_id,

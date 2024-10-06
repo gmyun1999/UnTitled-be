@@ -1,7 +1,5 @@
 from django.db import models
 
-from lucky_letter.infra.models.letter_model import Letter
-
 
 class User(models.Model):
     id = models.CharField(primary_key=True, max_length=36)
@@ -23,17 +21,17 @@ class UserRelation(models.Model):
     to_id = models.ForeignKey(
         to=User,
         max_length=36,
-        related_name="to_user_id",
         db_constraint=False,
+        related_name="user_relation_to_id",
         on_delete=models.SET_NULL,
         null=True,
     )
     from_id = models.ForeignKey(
         to=User,
         max_length=36,
-        related_name="from_user_id",
         db_constraint=False,
         on_delete=models.SET_NULL,
+        related_name="user_relation_from_id",
         null=True,
     )
     relation_type = models.CharField(max_length=36)
@@ -43,30 +41,3 @@ class UserRelation(models.Model):
 
     class Meta:
         db_table = "UserRelation"
-
-
-class UserLetterBox(models.Model):
-    id = models.CharField(primary_key=True, max_length=36)
-    user_id = models.ForeignKey(
-        to=User,
-        max_length=36,
-        related_name="user_id",
-        db_constraint=False,
-        on_delete=models.SET_NULL,
-        null=True,
-    )
-    letter_id = models.ForeignKey(
-        to=Letter,
-        max_length=36,
-        related_name="letter_id",
-        db_constraint=False,
-        on_delete=models.SET_NULL,
-        null=True,
-    )
-    type = models.CharField(max_length=10)
-    is_read = models.BooleanField(default=False)
-    delivered_at = models.DateTimeField(auto_now_add=True)
-
-    def mark_as_read(self):
-        self.is_read = True
-        self.save()

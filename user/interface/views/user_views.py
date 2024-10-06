@@ -298,14 +298,17 @@ def get_specific_letter(
     user_letter_box_service = UserLetterBoxService()
     user_token_manager = UserTokenManager()
     current_user = user_token_manager.get_current_user(user_payload_vo=token_payload)
-    letter, owner_id = user_letter_box_service.fetch_letter(letter_id=letter_id)
+    letter = user_letter_box_service.fetch_letter(
+        letter_id=letter_id, user_id=current_user.id
+    )
 
-    if current_user.id != owner_id:
+    if letter is None:
         return standard_response(
-            message="permission denied",
+            message="no letter",
             data="",
-            http_status=status.HTTP_400_BAD_REQUEST,
+            http_status=status.HTTP_200_OK,
         )
+
     return standard_response(
         message="fetch letter", data=letter, http_status=status.HTTP_200_OK
     )
