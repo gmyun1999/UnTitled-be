@@ -7,3 +7,4 @@ Authorization: Bearer {{letter-jwt}}
 # id -> 내 letter-box에 있는 편지의 id
 # letter_id의 id ->letter 그자체를 의미하는 id.
 # 즉 내 편지함에 있는 편지를 가져오려면 id를 사용해야함.
+

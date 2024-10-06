@@ -20,3 +20,7 @@ class IUserRepo(metaclass=ABCMeta):
     @abstractmethod
     def create(self, user_vo: userVo) -> userVo:
         pass
+
+    @abstractmethod
+    def delete(self, user_vo: userVo) -> None:
+        pass

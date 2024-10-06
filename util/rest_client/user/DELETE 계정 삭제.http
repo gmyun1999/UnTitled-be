@@ -1,0 +1,4 @@
+DELETE {{letter-host}}/user/
+Content-Type: application/json
+
+# METHOD만 DELETE로 넘겨주면 알아서 TOKEN 읽어서 현재 TOKEN의 유저를 삭제함.

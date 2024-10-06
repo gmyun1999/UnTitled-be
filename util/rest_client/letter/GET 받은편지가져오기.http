@@ -3,3 +3,4 @@ Content-Type: application/json
 Authorization: Bearer {{letter-jwt}}
 
 
+# 내 letter-box에 있는 것들중 받은 편지를 모두 반환.

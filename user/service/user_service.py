@@ -61,6 +61,9 @@ class UserService:
             "refresh": self.user_token_manager.create_user_refresh_token(user_id),
         }
 
+    def delete_user(self, user: UserVo) -> None:
+        self.user_repo.delete(user_vo=user)
+
 
 class UserRelationService:
     def __init__(self) -> None:

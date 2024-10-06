@@ -5,3 +5,4 @@ Authorization: Bearer {{letter-jwt}}
 
 
 # letter_id 를 가지고, 해당 letter_id에 답한 letter 가져오기.
+# 없으면 없다고 나옴

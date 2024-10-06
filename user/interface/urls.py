@@ -24,6 +24,5 @@ urlpatterns = [
         view=UserCheckDuplicateView.as_view(),
         name="userDuplicateCheck",
     ),
-    path("user/<int:app_id>/", view=UserView.as_view(), name="specificUser"),  # 특정 유저
     path("user/", view=UserView.as_view(), name="user"),  # 유저들, 혹은 유저
 ]

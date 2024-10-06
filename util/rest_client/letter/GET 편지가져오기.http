@@ -3,5 +3,6 @@ Content-Type: application/json
 Authorization: Bearer {{letter-jwt}}
 
 
+# 내 letter-box 에 있는 편지 가져오기
 # letter_id 를 넣기. letter-box의 id 아닙니다.
 

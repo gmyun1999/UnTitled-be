@@ -34,3 +34,8 @@ class UserRepo(IUserRepo):
             return user_vo.from_dict(serializer.data)
         else:
             raise DatabaseError(serializer.errors)
+
+    def delete(self, user_vo: UserVo) -> None:
+        user_id = user_vo.id
+        user_inst = User.objects.get(id=user_id)
+        user_inst.delete()

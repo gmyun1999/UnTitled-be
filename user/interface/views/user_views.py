@@ -60,12 +60,6 @@ class UserView(APIView):
         app_id: str = Field(max_length=16)
         name: str = Field(max_length=64)
 
-    def get(self):
-        """
-        조건에 맞는 user 혹은 users fetch
-        """
-        pass
-
     @validate_body(CreateUserBody)
     def post(self, request, body: CreateUserBody):
         """
@@ -85,6 +79,25 @@ class UserView(APIView):
             message="create user successfully",
             data=token,
             http_status=status.HTTP_201_CREATED,
+        )
+
+    @validate_token(roles=[UserRole.USER], validate_type=UserTokenType.ACCESS)
+    def delete(
+        self,
+        request,
+        token_payload: UserTokenPayload,
+    ):
+        """
+        계정삭제
+        """
+        current_user = self.user_token_manager.get_current_user(
+            user_payload_vo=token_payload
+        )
+        self.user_service.delete_user(user=current_user)
+        return standard_response(
+            message="delete user successfully",
+            data="",
+            http_status=status.HTTP_200_OK,
         )
 
 
