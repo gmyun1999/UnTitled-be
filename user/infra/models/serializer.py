@@ -3,8 +3,8 @@ from common.infra.serializer import (
     DynamicNestedFieldSerializer,
 )
 from user.domain.user import UserRelation as UserRelationVo
-from user.infra.models.user import User, UserRelation
 from user.infra.models.user_letter_box_model import UserLetterBox
+from user.infra.models.user_model import User, UserRelation
 
 
 class UserSerializer(DynamicFieldsModelSerializer):

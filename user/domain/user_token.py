@@ -30,3 +30,16 @@ class UserTokenPayload(Domain):
     role: str
     exp: int  # 만료시간
     iat: int  # 발급시간
+
+
+class PushServiceType(StrEnum):
+    FCM = "FCM"
+
+
+@dataclass
+class UserPushToken(Domain):
+    id: str
+    user_id: str
+    push_service: PushServiceType
+    token: str
+    created_at: str | None = None

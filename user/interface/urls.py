@@ -9,6 +9,7 @@ from user.interface.views.user_views import (
     get_received_letters,
     get_sent_letters,
     get_specific_letter,
+    save_push_service_token,
 )
 
 urlpatterns = [
@@ -24,5 +25,6 @@ urlpatterns = [
         view=UserCheckDuplicateView.as_view(),
         name="userDuplicateCheck",
     ),
+    path("user/push-token/", save_push_service_token, name="save_push_service_token"),
     path("user/", view=UserView.as_view(), name="user"),  # 유저들, 혹은 유저
 ]

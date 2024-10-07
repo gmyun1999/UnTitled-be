@@ -7,7 +7,7 @@ from user.infra.models.serializer import (
     UserJoinRelationSerializer,
     UserRelationSerializer,
 )
-from user.infra.models.user import UserRelation
+from user.infra.models.user_model import UserRelation
 from user.service.repository.i_user_relation_repo import IUserRelationRepo
 
 

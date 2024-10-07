@@ -2,15 +2,18 @@ import uuid
 from typing import Any
 
 from common.service.token.i_token_manager import ITokenManager
+from notification.domain.notification import Notification as NotificationVo
 from user.domain.user import RelationStatus, RelationType
 from user.domain.user import User as UserVo
 from user.domain.user import UserRelation as UserRelationVo
-from user.domain.user import UserRelation as c
 from user.domain.user_letter_box import UserLetterBox, UserLetterBoxType
+from user.domain.user_token import PushServiceType
 from user.infra.repository.user_letter_box import UserLetterBoxRepo
 from user.infra.repository.user_relation_repo import UserRelationRepo
 from user.infra.repository.user_repo import UserRepo
 from user.infra.token.user_token_manager import UserTokenManager
+from user.service.push.i_push_server import PushServer
+from user.service.push.push_server_factory import PushServerFactory
 from user.service.repository.i_user_letter_box import IUserLetterBoxRepo
 from user.service.repository.i_user_relation_repo import IUserRelationRepo
 from user.service.repository.i_user_repo import IUserRepo
@@ -202,3 +205,71 @@ class UserLetterBoxService:
 
     def delete_received_letter(self, letter_id: str, user_id: str):
         pass
+
+
+class UserNotificationService:
+    def __init__(self) -> None:
+        pass
+
+    def get_my_notification_setting(self, user_vo: UserVo):
+        """
+        내가 세팅해놓은 알림 상태 가져오기
+        """
+        pass
+
+    def update_my_notification_setting(self, user_vo: UserVo):
+        """
+        내 알림 세팅 수정하기
+        """
+        pass
+
+    def get_my_notification(self, user_vo: UserVo):
+        """
+        내 알림함에 있는 알림들 가져오기
+        """
+        pass
+
+    def delete_my_notification(self, my_notification_id: str, is_bulk: bool = False):
+        """
+        내 알림함에 있는 알림들 지우기
+        """
+        pass
+
+    def save_user_notification(self, notification_vo: NotificationVo, user_vo: UserVo):
+        """
+        user와 notification을 이용해서 알림 객체를 저정한다.
+        """
+        pass
+
+    def create_user_notification(
+        self,
+    ):
+        """
+        save 시킨다음에 user_notification setting 을 확인한후에 send_push_msg를 호출한다.
+        """
+        pass
+
+
+class UserPushService:
+    def __init__(self) -> None:
+        self.push_service_factory = PushServerFactory()
+
+    def save_push_service_token(
+        self,
+        token: str,
+        user_id: UserVo,
+        service_type: PushServiceType = PushServiceType.FCM,
+    ):
+        """
+        app으로부터 token을 받아서 저장한다.
+        """
+        pass
+
+    def send_push_msg(
+        self, msg, user: UserVo, service_type: PushServiceType = PushServiceType.FCM
+    ):
+        push_server: PushServer = self.push_service_factory.create(
+            push_service_type=service_type
+        )
+
+        return push_server.send_push_msg(message=msg)

@@ -21,6 +21,3 @@ class Notification(models.Model):
     )
     object_id = models.PositiveIntegerField(null=True, blank=True)
     related_object = GenericForeignKey("content_type", "object_id")
-
-
-s

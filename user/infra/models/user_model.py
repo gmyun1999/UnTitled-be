@@ -41,3 +41,18 @@ class UserRelation(models.Model):
 
     class Meta:
         db_table = "UserRelation"
+
+
+class UserPushToken(models.Model):
+    id = models.CharField(primary_key=True, max_length=36)
+    user_id = models.ForeignKey(
+        to=User,
+        max_length=36,
+        db_constraint=False,
+        on_delete=models.CASCADE,
+        related_name="push_token_user",
+    )
+    token = models.CharField(max_length=4096)
+    push_service = models.CharField(max_length=20)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

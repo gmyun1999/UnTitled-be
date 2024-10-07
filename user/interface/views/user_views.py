@@ -379,3 +379,16 @@ def get_sent_letters(
         data=letters_data,
         http_status=status.HTTP_200_OK,
     )
+
+
+@api_view(["POST"])
+@validate_token(
+    roles=[UserRole.USER], validate_type=UserTokenType.ACCESS, view_type="function"
+)
+def save_push_service_token(
+    request,
+    token_payload: UserTokenPayload,
+):
+    user_token_manager = UserTokenManager()
+    current_user = user_token_manager.get_current_user(user_payload_vo=token_payload)
+    pass

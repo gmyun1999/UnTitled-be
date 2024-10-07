@@ -1,7 +1,7 @@
 from django.db import models
 
 from lucky_letter.infra.models.letter_model import Letter
-from user.infra.models.user import User
+from user.infra.models.user_model import User
 
 
 class UserLetterBox(models.Model):

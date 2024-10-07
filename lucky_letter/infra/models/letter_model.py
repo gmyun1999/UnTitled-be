@@ -1,6 +1,6 @@
 from django.db import models
 
-from user.infra.models.user import User
+from user.infra.models.user_model import User
 
 
 class WritingPad(models.Model):
