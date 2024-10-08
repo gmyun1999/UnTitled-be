@@ -6,9 +6,13 @@ from lucky_letter.domain.letter import Letter as LetterVo
 from lucky_letter.domain.letter import LetterRelation as LetterRelationVo
 from lucky_letter.infra.repo.letter_repo import LetterRelationRepo, LetterRepo
 from lucky_letter.service.i_repo.i_letter_repo import ILetterRelationRepo, ILetterRepo
+from notification.domain.notification import NotificationType
+from notification.service.notification_service import NotificationService
 from user.domain.user import User as UserVo
+from user.domain.user_letter_box import UserLetterBoxType
 from user.infra.repository.user_repo import UserRepo
 from user.service.repository.i_user_repo import IUserRepo
+from user.service.user_letter_box_service import UserLetterBoxService
 
 
 class LetterService:
@@ -17,6 +21,9 @@ class LetterService:
         self.letter_repo: ILetterRepo = LetterRepo()
         self.letter_relation_repo: ILetterRelationRepo = LetterRelationRepo()
         self.user_repo: IUserRepo = UserRepo()
+
+        self.user_letter_box_service = UserLetterBoxService()
+        self.notification_service = NotificationService()
 
     def get_letter_relation(self, target_letter_id: str) -> LetterRelationVo | None:
         return self.letter_relation_repo.get_letter_relation(
@@ -73,6 +80,25 @@ class LetterService:
                 reply_letter_id=letter.id,
             )
             self.letter_relation_repo.create(letter_relation_vo=letter_relation)
+
+        # user letter box 관련 로직
+        if will_arrive_at is None:
+            self.user_letter_box_service.store_letter(
+                letter_vo=letter,
+                user_id=to_user.id,
+                type=UserLetterBoxType.RECEIVED,
+            )
+            self.user_letter_box_service.store_letter(
+                letter_vo=letter, user_id=from_user.id, type=UserLetterBoxType.SENT
+            )
+            # 알림 생성
+            self.notification_service.create_notification(
+                notification_type=NotificationType.RECEIVED_LETTER,
+                related_object=letter,
+            )
+        else:
+            # 도착시간이 명시되어있을경우 별도의 로직이 필요함. 현재는 x
+            raise NotImplementedError
 
         return letter
 

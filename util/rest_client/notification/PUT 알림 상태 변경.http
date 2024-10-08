@@ -1,0 +1,10 @@
+PUT {{letter-host}}/me/notification/1f4b3a52-ef65-4391-b9c5-8f3d7fb5d5c3
+Content-Type: application/json
+Authorization: Bearer {{letter-jwt}}
+
+{
+    "is_read": "True"
+}
+
+# GET .나의 알림 가져오기 의-> id 에 해당하는 리소스를 변경
+# 

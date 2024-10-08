@@ -1,4 +1,4 @@
-GET {{letter-host}}/me/notification/setting?notification_type=SYSTEM
+GET {{letter-host}}/me/notification/setting
 Content-Type: application/json
 Authorization: Bearer {{letter-jwt}}
 

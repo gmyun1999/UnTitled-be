@@ -14,7 +14,8 @@ from user.domain.user_role import UserRole
 from user.domain.user_token import UserTokenPayload, UserTokenType
 from user.infra.token.user_token_manager import UserTokenManager
 from user.interface.validator.user_token_validator import validate_token
-from user.service.user_service import UserRelationService, UserService
+from user.service.user_relation_service import UserRelationService
+from user.service.user_service import UserService
 
 
 class MyRelationshipsView(APIView):

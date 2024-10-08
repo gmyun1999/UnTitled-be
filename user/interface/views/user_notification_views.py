@@ -3,16 +3,49 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 from rest_framework import status
+from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 
 from common.interface.http_response import standard_response
-from common.interface.validators import validate_query_params
+from common.interface.validators import validate_body, validate_query_params
 from notification.domain.notification import NotificationType
 from user.domain.user_role import UserRole
 from user.domain.user_token import UserTokenPayload, UserTokenType
 from user.infra.token.user_token_manager import UserTokenManager
 from user.interface.validator.user_token_validator import validate_token
-from user.service.user_service import UserNotificationService
+from user.service.user_notification_service import UserNotificationService
+
+
+@dataclass
+class PutNotificationBody(BaseModel):
+    is_read: bool
+
+
+@api_view(["PUT"])
+@validate_token(
+    roles=[UserRole.USER], validate_type=UserTokenType.ACCESS, view_type="function"
+)
+@validate_body(PutNotificationBody, view_type="function")
+def update_my_notification_as_read(
+    request,
+    my_notification_id: str,
+    token_payload: UserTokenPayload,
+    body: PutNotificationBody,
+):
+    """
+    알림 읽음으로 변경
+    """
+    user_token_manager = UserTokenManager()
+    user_notification_service = UserNotificationService()
+    current_user = user_token_manager.get_current_user(user_payload_vo=token_payload)
+    # TODO: notification_id가 current user꺼인지 확인해야함
+    my_notification = user_notification_service.update_my_notification_as_read(
+        user_notification_id=my_notification_id
+    )
+
+    return standard_response(
+        message="update as read", data=my_notification, http_status=status.HTTP_200_OK
+    )
 
 
 class UserNotificationView(APIView):

@@ -8,11 +8,15 @@ from user.service.repository.i_user_push_repo import IUserPushRepo
 
 
 class UserPushRepo(IUserPushRepo):
-    def get_token(self, user: UserVo) -> UserPushTokenVo:
+    def get_token(self, user: UserVo) -> UserPushTokenVo | None:
         user_id = user.id
-        user_psuh_token = UserPushToken.objects.get(user_id=user_id)
-        serializer = UserPushTokenSerializer(user_psuh_token)
-        dicted = serializer.data
+        try:
+            user_psuh_token = UserPushToken.objects.get(user_id=user_id)
+            serializer = UserPushTokenSerializer(user_psuh_token)
+            dicted = serializer.data
+        except UserPushToken.DoesNotExist:
+            return None
+
         return UserPushTokenVo.from_dict(dicted)
 
     def save_push_token(self, user_push_token_vo: UserPushTokenVo) -> UserPushTokenVo:

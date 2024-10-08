@@ -29,7 +29,7 @@ class IUserNotificationRepo(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def mark_as_read(self, user_notification_id: str) -> None:
+    def mark_as_read(self, user_notification_id: str) -> dict[str, Any]:
         pass
 
 

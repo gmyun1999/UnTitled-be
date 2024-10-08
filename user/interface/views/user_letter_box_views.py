@@ -6,7 +6,7 @@ from user.domain.user_role import UserRole
 from user.domain.user_token import UserTokenPayload, UserTokenType
 from user.infra.token.user_token_manager import UserTokenManager
 from user.interface.validator.user_token_validator import validate_token
-from user.service.user_service import UserLetterBoxService
+from user.service.user_letter_box_service import UserLetterBoxService
 
 
 @api_view(["GET"])

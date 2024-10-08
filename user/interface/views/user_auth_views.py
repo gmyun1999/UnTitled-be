@@ -13,7 +13,8 @@ from user.domain.user_role import UserRole
 from user.domain.user_token import PushServiceType, UserTokenPayload, UserTokenType
 from user.infra.token.user_token_manager import UserTokenManager
 from user.interface.validator.user_token_validator import validate_token
-from user.service.user_service import UserPushService, UserService
+from user.service.user_push_service import UserPushService
+from user.service.user_service import UserService
 
 
 class RefreshTokenView(APIView):

@@ -2,4 +2,4 @@ GET {{letter-host}}/me/relationship/?relation=FRIEND&status=ACCEPT
 Content-Type: application/json
 Authorization: Bearer {{letter-jwt}}
 
-// 친구 목록 및 친구 수락 상태 및 등등 다양하게 조회할수있음
+// 친구 목록 및 친구 수락 상태 및 등등 다양하게 조회할수있음(ACCEPT, REJECT, PENDING)

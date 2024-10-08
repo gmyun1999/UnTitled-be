@@ -7,6 +7,8 @@ from notification.domain.notification import NotificationType
 
 @dataclass
 class UserNotification(Domain):
+    FIELD_NOTIFICATION_ID = "notification_id"
+
     id: str
     user_id: str
     notification_id: str

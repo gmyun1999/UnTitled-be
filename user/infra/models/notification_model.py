@@ -19,7 +19,7 @@ class UserNotificationSetting(models.Model):
 class UserNotification(models.Model):
     id = models.CharField(primary_key=True, max_length=36)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, db_constraint=False)
-    notification = models.ForeignKey(
+    notification_id = models.ForeignKey(
         Notification, on_delete=models.CASCADE, db_constraint=False
     )
     is_read = models.BooleanField(default=False)

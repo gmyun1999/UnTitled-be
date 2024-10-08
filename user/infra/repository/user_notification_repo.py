@@ -8,6 +8,7 @@ from user.domain.user_notification import UserNotification as UserNotificationVo
 from user.domain.user_notification import (
     UserNotificationSetting as UserNotificationSettingVo,
 )
+from user.infra.models.nested_serializer import NestedUserNotificationSerializer
 from user.infra.models.notification_model import (
     UserNotification,
     UserNotificationSetting,
@@ -32,15 +33,15 @@ class UserNotificationRepo(IUserNotificationRepo):
                 notification=filter.notification_id
             )
         if filter.user_id:
-            user_notification = user_notification.filter(user=filter.user_id)
+            user_notification = user_notification.filter(user_id=filter.user_id)
 
-        serializer = UserNotificationSerializer(user_notification, many=True)
+        serializer = NestedUserNotificationSerializer(user_notification, many=True)
         return serializer.data
 
     def save_user_notification(
         self, user_notification_vo: UserNotificationVo
     ) -> UserNotificationVo:
-        dicted = user_notification_vo.to_dict
+        dicted = user_notification_vo.to_dict()
         serializer = UserNotificationSerializer(data=dicted)
         if serializer.is_valid():
             serializer.save()
@@ -49,9 +50,11 @@ class UserNotificationRepo(IUserNotificationRepo):
         else:
             raise DatabaseError(serializer.errors)
 
-    def mark_as_read(self, user_notification_id: str) -> None:
+    def mark_as_read(self, user_notification_id: str) -> dict[str, Any]:
         user_notification = UserNotification.objects.get(id=user_notification_id)
         user_notification.mark_as_read()
+        serializer = UserNotificationSerializer(user_notification)
+        return serializer.data
 
 
 class UserNotificationSettingRepo(IUserNotificationSettingRepo):
@@ -62,11 +65,11 @@ class UserNotificationSettingRepo(IUserNotificationSettingRepo):
 
         if filter.user_id:
             user_notification_setting = user_notification_setting.filter(
-                user=filter.user_id
+                user_id=filter.user_id
             )
         if filter.notification_type:
             user_notification_setting = user_notification_setting.filter(
-                notification_type=filter.notification_type
+                notification_type=filter.notification_type.value
             )
 
         serializer = UserNotificationSettingSerializer(
@@ -89,7 +92,7 @@ class UserNotificationSettingRepo(IUserNotificationSettingRepo):
         self, user: UserVo, notification_type: NotificationType, is_push_allow: bool
     ) -> UserNotificationSettingVo:
         previous_instance = UserNotificationSetting.objects.get(
-            user_id=user.id, notification_type=notification_type
+            user_id=user.id, notification_type=notification_type.value
         )
         data = {UserNotificationSettingVo.FIELD_IS_PUSH_ALLOW: is_push_allow}
 

@@ -1,4 +1,4 @@
-PUT {{letter-host}}/me/notification/setting?is_push_allow=True
+PUT {{letter-host}}/me/notification/setting?is_push_allow=False
 Content-Type: application/json
 Authorization: Bearer {{letter-jwt}}
 

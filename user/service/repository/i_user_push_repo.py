@@ -6,7 +6,7 @@ from user.domain.user_token import UserPushToken as UserPushTokenVo
 
 class IUserPushRepo(metaclass=ABCMeta):
     @abstractmethod
-    def get_token(self, user: userVo) -> UserPushTokenVo:
+    def get_token(self, user: userVo) -> UserPushTokenVo | None:
         pass
 
     @abstractmethod

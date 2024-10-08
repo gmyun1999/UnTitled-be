@@ -15,7 +15,8 @@ from user.domain.user_role import UserRole
 from user.domain.user_token import UserTokenPayload, UserTokenType
 from user.infra.token.user_token_manager import UserTokenManager
 from user.interface.validator.user_token_validator import validate_token
-from user.service.user_service import UserLetterBoxService, UserService
+from user.service.user_letter_box_service import UserLetterBoxService
+from user.service.user_service import UserService
 
 
 class ReplyLetterView(APIView):
@@ -63,7 +64,6 @@ class ReplyLetterView(APIView):
 class LetterView(APIView):
     def __init__(self):
         self.letter_service = LetterService()
-        self.user_letter_box_service = UserLetterBoxService()
         self.user_service = UserService()
         # TODO: DI 적용
         self.token_manager: ITokenManager = UserTokenManager()
@@ -147,24 +147,6 @@ class LetterView(APIView):
             will_arrive_at=body.will_arrive_at,
         )
         letter = letter_vo.to_dict()
-
-        if body.will_arrive_at is None:
-            self.user_letter_box_service.store_letter(
-                letter_id=letter_vo.id,
-                user_id=receiver.id,
-                type=UserLetterBoxType.RECEIVED,
-            )
-            self.user_letter_box_service.store_letter(
-                letter_id=letter_vo.id, user_id=user.id, type=UserLetterBoxType.SENT
-            )
-
-        else:
-            # 도착시간이 명시되어있을경우 별도의 로직이 필요함. 현재는 x
-            return standard_response(
-                message="not implement error",
-                data="",
-                http_status=status.HTTP_400_BAD_REQUEST,
-            )
 
         return standard_response(
             message="send letter successfully",

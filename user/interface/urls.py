@@ -12,6 +12,7 @@ from user.interface.views.user_letter_box_views import (
 from user.interface.views.user_notification_views import (
     UserNotificationSettingView,
     UserNotificationView,
+    update_my_notification_as_read,
 )
 from user.interface.views.user_relation_views import MyRelationshipsView
 from user.interface.views.user_views import UserCheckDuplicateView, UserMeView, UserView
@@ -26,6 +27,11 @@ urlpatterns = [
         "me/notification/setting",
         view=UserNotificationSettingView.as_view(),
         name="user_notification_setting",
+    ),
+    path(
+        "me/notification/<str:my_notification_id>",
+        update_my_notification_as_read,
+        name="user_notification update",
     ),
     path(
         "me/notification/",
