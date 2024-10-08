@@ -29,11 +29,14 @@ def validate_query_params(model: Type[BaseModel]):
     return decorated_func
 
 
-def validate_body(model: Type[BaseModel]):
+def validate_body(model: Type[BaseModel], view_type: str = "class"):
     def decorated_func(f):
         @wraps(f)
         def wrapper(*args, **kwargs):
-            request = args[1]
+            if view_type == "class":
+                request = args[1]
+            elif view_type == "function":
+                request = args[0]
             body = JSONParser().parse(request)
             try:
                 validated_body = model.model_validate(body)

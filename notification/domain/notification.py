@@ -15,6 +15,7 @@ class NotificationType(StrEnum):
 
 @dataclass
 class Notification(Domain):
+    id: str
     title: str
     message: str
     notification_type: NotificationType

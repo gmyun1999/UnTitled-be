@@ -19,7 +19,7 @@ class UnregisterAppError(Exception):
 
 class IPushServer(metaclass=ABCMeta):
     @abstractmethod
-    def validate_token(self, token: str):
+    def validate_token(self, token: str) -> bool:
         pass
 
     @abstractmethod

@@ -1,16 +1,17 @@
 from django.urls import path
 
-from user.interface.views.user_views import (
-    MyRelationshipsView,
+from user.interface.views.user_auth_views import (
     RefreshTokenView,
-    UserCheckDuplicateView,
-    UserMeView,
-    UserView,
+    save_push_service_token,
+)
+from user.interface.views.user_letter_box_views import (
     get_received_letters,
     get_sent_letters,
     get_specific_letter,
-    save_push_service_token,
 )
+from user.interface.views.user_notification_views import UserNotificationView
+from user.interface.views.user_relation_views import MyRelationshipsView
+from user.interface.views.user_views import UserCheckDuplicateView, UserMeView, UserView
 
 urlpatterns = [
     # 인증된 user(자기자신)
@@ -18,6 +19,11 @@ urlpatterns = [
     path("me/letter-box/sent/", get_sent_letters, name="get_sent_letters"),
     path("me/letter-box/received/", get_received_letters, name="get_received_letters"),
     path("me/letter-box/<str:letter_id>/", get_specific_letter, name="get_my_letter"),
+    path(
+        "me/notification/",
+        view=UserNotificationView.as_view(),
+        name="save_push_service_token",
+    ),
     path("me/", view=UserMeView.as_view(), name="userMe"),
     path("user/token-refresh/", view=RefreshTokenView.as_view(), name="tokenRefresh"),
     path(
@@ -28,3 +34,4 @@ urlpatterns = [
     path("user/push-token/", save_push_service_token, name="save_push_service_token"),
     path("user/", view=UserView.as_view(), name="user"),  # 유저들, 혹은 유저
 ]
+# path("user/notification/setting", save_push_service_token, name="save_push_service_token"),

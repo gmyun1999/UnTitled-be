@@ -4,8 +4,8 @@ Authorization: Bearer {{letter-jwt}}
 
 
 {
-  "to_app_id": "app_1",
-  "to_letter_id": "b89c6607-519a-4d88-8e93-9615b19c46fe",
+  "to_app_id": "app2",
+  "to_letter_id": "5765a1fb-a0a1-4b1e-96e3-7bef306bedca",
   "is_anonymous": "False",
   "writing_pad_id": "1",
   "envelope_id": "1",
@@ -17,6 +17,7 @@ Authorization: Bearer {{letter-jwt}}
 
 # 만약 답장이 아니라 편지를 처음 보내는거라면 to_letter_id를 넘겨주지않는다
 # 만약 답장인경우 답을 해야하는 편지의 letter_id에 맞게 넘겨준다.
+# 이때 to_letter_id의 주인이 to_app_id 여야함. 관련된 기타 예외상황 모두 처리해둠
 # {
 #   "to_app_id": "app_003",
 #   "to_letter_id": "asdasd",

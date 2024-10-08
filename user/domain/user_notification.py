@@ -7,6 +7,7 @@ from notification.domain.notification import NotificationType
 
 @dataclass
 class UserNotification(Domain):
+    id: str
     user_id: str
     notification_id: str
     is_read: bool = False
@@ -19,6 +20,9 @@ class UserNotification(Domain):
 
 @dataclass
 class UserNotificationSetting(Domain):
+    FIELD_IS_PUSH_ALLOW = "is_push_allow"
+
+    id: str
     user_id: str
     notification_type: NotificationType
     is_push_allow: bool

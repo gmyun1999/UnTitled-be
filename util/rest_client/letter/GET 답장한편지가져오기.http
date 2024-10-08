@@ -1,4 +1,4 @@
-GET {{letter-host}}/letter/b89c6607-519a-4d88-8e93-9615b19c46fe/reply
+GET {{letter-host}}/letter/5765a1fb-a0a1-4b1e-96e3-7bef306bedca/reply
 Content-Type: application/json
 Authorization: Bearer {{letter-jwt}}
 

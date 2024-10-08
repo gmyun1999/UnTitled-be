@@ -39,8 +39,8 @@ class Letter(Domain):
     FIELD_WILL_ARRIVE_AT = "will_arrive_at"
 
     id: str
-    to_user_id: str
-    from_user_id: str
+    to_user_id: str | None
+    from_user_id: str | None
     is_anonymous: bool
     writing_pad_id: str  # 편지지
     envelope_id: str  # 편지봉투

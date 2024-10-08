@@ -1,0 +1,12 @@
+POST {{letter-host}}/user/push-token/
+Content-Type: application/json
+Authorization: Bearer {{letter-jwt}}
+
+
+{
+    "token":  "asdasd",
+    "push_server": "FCM"
+}
+
+# 현재는 push server 타입이 fcm 밖에없음. 
+# fcm server 랑 통신후에 valid 한 token이면 저장하고 push 알림때 사용됨.

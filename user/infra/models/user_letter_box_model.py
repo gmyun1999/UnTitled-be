@@ -10,7 +10,7 @@ class UserLetterBox(models.Model):
         to=User,
         max_length=36,
         db_constraint=False,
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         related_name="user_letter_box_user_id",
         null=True,
     )
@@ -18,7 +18,7 @@ class UserLetterBox(models.Model):
         to=Letter,
         max_length=36,
         db_constraint=False,
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         related_name="user_letter_box_letter_id",
         null=True,
     )

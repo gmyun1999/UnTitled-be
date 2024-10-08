@@ -6,7 +6,7 @@ Content-Type: application/json
 }
 
 
-# app_id 를 중복확인하고싶으면 위에처럼 넘기고 name 중복확인하고싶으면 밑처럼 넘기고
+# app_id 를 중복확인하고싶으면 위에처럼 넘기고 name 중복확인하고싶으면 밑처럼 넘기기
 # {
 #     "name": "dbsrbals24"
 # }

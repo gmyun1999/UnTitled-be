@@ -10,7 +10,7 @@ from user.service.push.i_push_server import (
 
 
 class FCM(IPushServer):
-    def validate_token(self, token: str):
+    def validate_token(self, token: str) -> bool:
         message = messaging.Message(token=token)
 
         # 메시지 전송 시도
