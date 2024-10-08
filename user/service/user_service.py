@@ -254,22 +254,31 @@ class UserNotificationService:
 
     def update_my_notification_setting(
         self,
-        previous_id: str,
         user_vo: UserVo,
         is_push_allow: bool,
-        notification_type: NotificationType | None,
-    ):
+        notification_type: NotificationType | None = None,
+    ) -> list[UserNotificationSetting]:
         """
         내 알림 세팅 수정하기
         """
-        filter = self.user_notification_setting_repo.Filter(
-            user_id=user_vo.id,
-            is_push_allow=is_push_allow,
-            notification_type=notification_type,
-        )
-        return self.user_notification_setting_repo.modify_user_settings(
-            existed_user_setting_id=previous_id, filter=filter
-        )
+        notification_setting_result = []
+
+        if notification_type is None:
+            for notification_type_item in NotificationType:
+                result = self.user_notification_setting_repo.modify_user_settings(
+                    user=user_vo,
+                    notification_type=notification_type_item,
+                    is_push_allow=is_push_allow,
+                )
+                notification_setting_result.append(result)
+        else:
+            result = self.user_notification_setting_repo.modify_user_settings(
+                user=user_vo,
+                notification_type=notification_type,
+                is_push_allow=is_push_allow,
+            )
+            notification_setting_result.append(result)
+        return notification_setting_result
 
     def get_my_notification(self, user_vo: UserVo) -> list[dict[str, Any] | None]:
         """

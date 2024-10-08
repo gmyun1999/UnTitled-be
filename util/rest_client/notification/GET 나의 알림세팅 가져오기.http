@@ -1,0 +1,14 @@
+GET {{letter-host}}/me/notification/setting?notification_type=SYSTEM
+Content-Type: application/json
+Authorization: Bearer {{letter-jwt}}
+
+# 나의 알림세팅 목록 모두 가져오기.
+# 만약 특정 알림세팅 목록을 가져오고싶으면 쿼리파람으로 notification_type에 value를 주면됨.
+# ex)/me/notification/setting?notification_type=SYSTEM
+# value 는 다음과같음
+# class NotificationType(StrEnum):
+#     SYSTEM = "SYSTEM"
+#     ADVERTISEMENT = "ADVERTISEMENT"
+#     FRIEND_REQUEST = "FRIEND_REQUEST"
+#     RECEIVED_LETTER = "RECEIVED_LETTER"
+#     SENT_LETTER = "SENT_LETTER"

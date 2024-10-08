@@ -6,7 +6,7 @@ from user.infra.models.user_model import User
 
 class UserNotificationSetting(models.Model):
     id = models.CharField(primary_key=True, max_length=36)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, db_constraint=False)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, db_constraint=False)
     notification_type = models.CharField(max_length=20)
     is_push_allow = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -18,7 +18,7 @@ class UserNotificationSetting(models.Model):
 
 class UserNotification(models.Model):
     id = models.CharField(primary_key=True, max_length=36)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, db_constraint=False)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, db_constraint=False)
     notification = models.ForeignKey(
         Notification, on_delete=models.CASCADE, db_constraint=False
     )

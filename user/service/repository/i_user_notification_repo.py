@@ -3,6 +3,7 @@ from typing import Any
 
 from common.domain import Domain
 from notification.domain.notification import NotificationType
+from user.domain.user import User as UserVo
 from user.domain.user_notification import UserNotification as UserNotificationVo
 from user.domain.user_notification import (
     UserNotificationSetting as UserNotificationSettingVo,
@@ -56,6 +57,6 @@ class IUserNotificationSettingRepo(metaclass=ABCMeta):
 
     @abstractmethod
     def modify_user_settings(
-        self, existed_user_setting_id: str, filter: Filter
+        self, user: UserVo, notification_type: NotificationType, is_push_allow: bool
     ) -> UserNotificationSettingVo:
         pass

@@ -1,0 +1,14 @@
+PUT {{letter-host}}/me/notification/setting?notification_type=RECEIVED_LETTER&is_push_allow=True
+Content-Type: application/json
+Authorization: Bearer {{letter-jwt}}
+
+# 알림세팅을 세부적으로 변경할수있음
+# 해당되는 
+# ex)/me/notification/setting?notification_type=SYSTEM?is_push_allow=False
+# value 는 다음과같음
+# class NotificationType(StrEnum):
+#     SYSTEM = "SYSTEM"
+#     ADVERTISEMENT = "ADVERTISEMENT"
+#     FRIEND_REQUEST = "FRIEND_REQUEST"
+#     SENT_LETTER = "SENT_LETTER"
+#     RECEIVED_LETTER = "RECEIVED_LETTER"

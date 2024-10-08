@@ -2,6 +2,8 @@ from typing import Any
 
 from django.db import DatabaseError
 
+from notification.domain.notification import NotificationType
+from user.domain.user import User as UserVo
 from user.domain.user_notification import UserNotification as UserNotificationVo
 from user.domain.user_notification import (
     UserNotificationSetting as UserNotificationSettingVo,
@@ -84,13 +86,17 @@ class UserNotificationSettingRepo(IUserNotificationSettingRepo):
             raise DatabaseError(serializer.errors)
 
     def modify_user_settings(
-        self, existed_user_setting_id: str, filter: IUserNotificationSettingRepo.Filter
+        self, user: UserVo, notification_type: NotificationType, is_push_allow: bool
     ) -> UserNotificationSettingVo:
-        instance = UserNotificationSetting.objects.get(id=existed_user_setting_id)
-        dicted = filter.to_dict()
+        previous_instance = UserNotificationSetting.objects.get(
+            user_id=user.id, notification_type=notification_type
+        )
+        data = {UserNotificationSettingVo.FIELD_IS_PUSH_ALLOW: is_push_allow}
 
         serializer = UserNotificationSettingSerializer(
-            data=dicted, partial=True, instance=instance
+            previous_instance,
+            data=data,
+            partial=True,
         )
         if serializer.is_valid():
             serializer.save()

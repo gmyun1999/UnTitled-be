@@ -9,7 +9,10 @@ from user.interface.views.user_letter_box_views import (
     get_sent_letters,
     get_specific_letter,
 )
-from user.interface.views.user_notification_views import UserNotificationView
+from user.interface.views.user_notification_views import (
+    UserNotificationSettingView,
+    UserNotificationView,
+)
 from user.interface.views.user_relation_views import MyRelationshipsView
 from user.interface.views.user_views import UserCheckDuplicateView, UserMeView, UserView
 
@@ -20,9 +23,14 @@ urlpatterns = [
     path("me/letter-box/received/", get_received_letters, name="get_received_letters"),
     path("me/letter-box/<str:letter_id>/", get_specific_letter, name="get_my_letter"),
     path(
+        "me/notification/setting",
+        view=UserNotificationSettingView.as_view(),
+        name="user_notification_setting",
+    ),
+    path(
         "me/notification/",
         view=UserNotificationView.as_view(),
-        name="save_push_service_token",
+        name="user_notification",
     ),
     path("me/", view=UserMeView.as_view(), name="userMe"),
     path("user/token-refresh/", view=RefreshTokenView.as_view(), name="tokenRefresh"),
@@ -34,4 +42,3 @@ urlpatterns = [
     path("user/push-token/", save_push_service_token, name="save_push_service_token"),
     path("user/", view=UserView.as_view(), name="user"),  # 유저들, 혹은 유저
 ]
-# path("user/notification/setting", save_push_service_token, name="save_push_service_token"),

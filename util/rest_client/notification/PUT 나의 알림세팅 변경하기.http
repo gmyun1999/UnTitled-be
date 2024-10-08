@@ -1,0 +1,5 @@
+PUT {{letter-host}}/me/notification/setting?is_push_allow=True
+Content-Type: application/json
+Authorization: Bearer {{letter-jwt}}
+
+# 알림세팅 한번에 변경. is_push_allow값에 False 혹은 True
