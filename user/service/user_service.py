@@ -12,7 +12,7 @@ from user.infra.repository.user_letter_box import UserLetterBoxRepo
 from user.infra.repository.user_relation_repo import UserRelationRepo
 from user.infra.repository.user_repo import UserRepo
 from user.infra.token.user_token_manager import UserTokenManager
-from user.service.push.i_push_server import PushServer
+from user.service.push.i_push_server import IPushServer
 from user.service.push.push_server_factory import PushServerFactory
 from user.service.repository.i_user_letter_box import IUserLetterBoxRepo
 from user.service.repository.i_user_relation_repo import IUserRelationRepo
@@ -268,7 +268,7 @@ class UserPushService:
     def send_push_msg(
         self, msg, user: UserVo, service_type: PushServiceType = PushServiceType.FCM
     ):
-        push_server: PushServer = self.push_service_factory.create(
+        push_server: IPushServer = self.push_service_factory.create(
             push_service_type=service_type
         )
 

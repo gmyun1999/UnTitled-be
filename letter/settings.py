@@ -17,12 +17,17 @@ from pathlib import Path
 import environ
 import pymysql
 
+from letter.firebase_config import initialize_firebase
+
 env = environ.Env()
 environ.Env.read_env()
 
 ENV = env("ENV", default="localhost")
 print(ENV)
 
+
+# firebase 초기화
+initialize_firebase()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
