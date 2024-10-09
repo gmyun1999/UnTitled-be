@@ -122,7 +122,7 @@ venv.bak/
 /site
 
 # firebase sdk
-.json
+*.json
 
 # mypy
 .mypy_cache/
