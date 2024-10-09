@@ -4,8 +4,7 @@ Authorization: Bearer {{letter-jwt}}
 
 
 {
-  "to_app_id": "app1",
-  "to_letter_id": "c04ffd99-61d9-4fe2-9c76-0d561ab7860d",
+  "to_app_id": "app10",
   "is_anonymous": "False",
   "writing_pad_id": "1",
   "envelope_id": "1",

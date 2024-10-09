@@ -55,6 +55,7 @@ class UserPushService:
         notification: NotificationVo,
     ) -> PushMessage:
         return PushMessage(
+            id=str(uuid.uuid4()),
             user_name=user.name,
             title=notification.title,
             body=notification.message,

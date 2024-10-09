@@ -1,7 +1,7 @@
 from types import SimpleNamespace
 
 from lucky_letter.domain.letter import Letter
-from notification.domain.notification import NotificationType
+from notification.domain.notification import NotificationRelatedDomain, NotificationType
 from user.domain.user import User as UserVo
 from user.domain.user import UserRelation
 from user.infra.repository.user_repo import UserRepo
@@ -18,11 +18,16 @@ class TemplateNotFoundError(Exception):
 
 class NotificationTemplateResponse:
     def __init__(
-        self, title: str, message: str, target_users: list[UserVo] | None = None
+        self,
+        title: str,
+        message: str,
+        related_domain: NotificationRelatedDomain | None,
+        target_users: list[UserVo] | None = None,
     ):
         self.title = title
         self.message = message
         self.target_users = target_users
+        self.related_domain = related_domain
 
 
 class NotificationTemplateFactory:
@@ -83,6 +88,7 @@ class NotificationTemplateFactory:
             title="친구 요청",
             message=f"{from_user.name}님이 {to_user.name}님에게 친구 요청을 보냈습니다.",
             target_users=[to_user],
+            related_domain=NotificationRelatedDomain.UserRelation,
         )
 
     def _create_received_letter_template(
@@ -107,6 +113,7 @@ class NotificationTemplateFactory:
             title="새로운 편지 도착",
             message=f"{from_user.name}님으로부터 '{related_object.title}' 제목의 새로운 편지가 도착했습니다.",
             target_users=[to_user],
+            related_domain=NotificationRelatedDomain.Letter,
         )
 
     def _create_default_template(

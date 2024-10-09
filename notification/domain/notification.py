@@ -12,6 +12,11 @@ class NotificationType(StrEnum):
     RECEIVED_LETTER = "RECEIVED_LETTER"
 
 
+class NotificationRelatedDomain(StrEnum):
+    Letter = "Letter"
+    UserRelation = "UserRelation"
+
+
 @dataclass
 class Notification(Domain):
     FIELD_TITLE = "title"
@@ -21,5 +26,6 @@ class Notification(Domain):
     title: str
     message: str
     notification_type: NotificationType
+    related_domain: NotificationRelatedDomain | None
+    related_object_id: str | None = None
     created_at: datetime = field(default_factory=datetime.now)
-    related_object: object = None

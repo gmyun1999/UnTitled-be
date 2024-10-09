@@ -1,5 +1,6 @@
 import uuid
 
+from common.domain import Domain
 from notification.domain.notification import Notification, NotificationType
 from notification.infra.repository.notification_repo import NotificationRepo
 from notification.service.notification_factory import (
@@ -20,7 +21,7 @@ class NotificationService:
         self.user_repo: IUserRepo = UserRepo()
 
     def create_notification(
-        self, notification_type: NotificationType, related_object: object
+        self, notification_type: NotificationType, related_object: Domain
     ):
         template: NotificationTemplateResponse = self.notification_factory.get_template(
             notification_type=notification_type, related_object=related_object
@@ -31,7 +32,8 @@ class NotificationService:
             title=template.title,
             message=template.message,
             notification_type=notification_type,
-            related_object=related_object,
+            related_domain=template.related_domain,
+            related_object_id=related_object.id,
         )
 
         self.notification_repo.save(notification)

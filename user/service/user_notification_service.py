@@ -100,7 +100,7 @@ class UserNotificationService:
 
     def update_my_notification_as_read(
         self, user_notification_id: str
-    ) -> dict[str, Any]:
+    ) -> dict[str, Any] | None:
         return self.user_notification_repo.mark_as_read(
             user_notification_id=user_notification_id
         )

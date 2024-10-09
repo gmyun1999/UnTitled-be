@@ -1,4 +1,4 @@
-PUT {{letter-host}}/me/notification/1f4b3a52-ef65-4391-b9c5-8f3d7fb5d5c3
+PUT {{letter-host}}/me/notification/101c6033-2197-47d4-9ffc-deb440595ee1122
 Content-Type: application/json
 Authorization: Bearer {{letter-jwt}}
 

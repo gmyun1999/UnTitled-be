@@ -13,7 +13,9 @@ class UserLetterBoxRepo(IUserLetterBoxRepo):
     def fetch_my_letters(
         self, user_id: str, letter_type: str
     ) -> list[dict[str, Any]] | None:
-        letters = UserLetterBox.objects.filter(user_id=user_id, type=letter_type)
+        letters = UserLetterBox.objects.filter(
+            user_id=user_id, type=letter_type
+        ).order_by("-delivered_at")
         serializer = NestedUserLetterBoxSerializer(letters, many=True)
         return serializer.data if serializer.data else None
 

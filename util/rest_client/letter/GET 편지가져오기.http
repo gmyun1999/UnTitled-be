@@ -1,4 +1,4 @@
-GET {{letter-host}}/me/letter-box/c04ffd99-61d9-4fe2-9c76-0d561ab7860d
+GET {{letter-host}}/me/letter-box/d5e00a6e-b776-4503-8748-1ccd2455aad6
 Content-Type: application/json
 Authorization: Bearer {{letter-jwt}}
 

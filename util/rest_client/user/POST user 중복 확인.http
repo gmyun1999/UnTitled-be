@@ -1,4 +1,4 @@
-POSt {{letter-host}}/user/check-duplicate
+POSt {{letter-host}}/user/check-duplicate/
 Content-Type: application/json
 
 {

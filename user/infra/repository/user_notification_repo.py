@@ -35,6 +35,7 @@ class UserNotificationRepo(IUserNotificationRepo):
         if filter.user_id:
             user_notification = user_notification.filter(user_id=filter.user_id)
 
+        user_notification = user_notification.order_by("-created_at")
         serializer = NestedUserNotificationSerializer(user_notification, many=True)
         return serializer.data
 
@@ -50,10 +51,14 @@ class UserNotificationRepo(IUserNotificationRepo):
         else:
             raise DatabaseError(serializer.errors)
 
-    def mark_as_read(self, user_notification_id: str) -> dict[str, Any]:
-        user_notification = UserNotification.objects.get(id=user_notification_id)
-        user_notification.mark_as_read()
-        serializer = UserNotificationSerializer(user_notification)
+    def mark_as_read(self, user_notification_id: str) -> dict[str, Any] | None:
+        try:
+            user_notification = UserNotification.objects.get(id=user_notification_id)
+            user_notification.mark_as_read()
+            serializer = UserNotificationSerializer(user_notification)
+        except UserNotification.DoesNotExist:
+            return None
+
         return serializer.data
 
 

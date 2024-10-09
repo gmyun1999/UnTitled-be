@@ -32,6 +32,7 @@ class UserNotificationSetting(Domain):
 
 @dataclass
 class PushMessage(Domain):
+    id: str
     user_name: str
     title: str
     body: str

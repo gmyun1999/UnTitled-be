@@ -29,12 +29,12 @@ class IUserNotificationRepo(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def mark_as_read(self, user_notification_id: str) -> dict[str, Any]:
+    def mark_as_read(self, user_notification_id: str) -> dict[str, Any] | None:
         pass
 
 
 class IUserNotificationSettingRepo(metaclass=ABCMeta):
-    class Filter(Domain):
+    class Filter:
         def __init__(
             self,
             user_id: str | None = None,

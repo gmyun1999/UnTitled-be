@@ -42,6 +42,12 @@ def update_my_notification_as_read(
     my_notification = user_notification_service.update_my_notification_as_read(
         user_notification_id=my_notification_id
     )
+    if my_notification is None:
+        return standard_response(
+            message="no notification id",
+            data="",
+            http_status=status.HTTP_400_BAD_REQUEST,
+        )
 
     return standard_response(
         message="update as read", data=my_notification, http_status=status.HTTP_200_OK

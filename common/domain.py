@@ -11,6 +11,8 @@ from common.utils.base import remove_none
 
 @dataclass
 class Domain:
+    id: str
+
     @classmethod
     def from_dict(cls: Type, dto: dict[str, Any]):  # 객체로 변환
         return from_dict(
