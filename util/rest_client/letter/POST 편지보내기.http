@@ -6,9 +6,9 @@ Authorization: Bearer {{letter-jwt}}
 {
   "to_app_id": "app10",
   "is_anonymous": "False",
-  "writing_pad_id": "1",
-  "envelope_id": "1",
-  "stamp_id": "1",
+  "writing_pad_id": "a6872b3d-a28e-4417-ad8f-49ad449269aa",
+  "envelope_id": "8c5750e7-0d7c-4f7d-aee4-41ab7d8d06f5",
+  "stamp_id": "b0186622-cd39-4b36-a2ce-3244e9aff93f",
   "content": "reply",
   "title": "To app_001 - reply",
   "font": "NATO_SANS_KR"
