@@ -158,7 +158,7 @@ else:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.mysql",
-            "NAME": "template",
+            "NAME": "letter-be",
             "USER": "admin",
             "PASSWORD": env("DB_PASSWORD", default=""),
             "HOST": env("DB_HOST", default=""),
