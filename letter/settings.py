@@ -19,18 +19,21 @@ import pymysql
 
 from letter.firebase_config import initialize_firebase
 
+# BASE_DIR 설정 (프로젝트 루트 디렉토리)
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# environ 설정
 env = environ.Env()
-environ.Env.read_env()
 
-ENV = env("ENV", default="localhost")
+# .env 파일을 BASE_DIR 루트 디렉토리에서 찾음
+env.read_env(BASE_DIR / ".env")
+
+# 환경 변수 읽기
+ENV = env("ENV", default="cannot read env")
 print(ENV)
-
 
 # firebase 초기화
 initialize_firebase()
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -221,8 +224,8 @@ DefaultContext.rounding = ROUND_HALF_UP
 BASE_URL = env("BASE_URL", default="http://127.0.0.1:8000")
 SERVICE_URL = env("SERVICE_URL", default="http://localhost:3000")
 
-JWT_SECRET = env("JWT_SECRET", default="JWT_SECRET")
 ENC_DEC_KEY = env("ENC_DEC_KEY", default="ENC_DEC_KEY")
+JWT_SECRET = env("JWT_SECRET", default="JWT_SECRET")
 
 HTTPX_TIMEOUT = int(env("HTTPX_TIMEOUT", default="600"))
 

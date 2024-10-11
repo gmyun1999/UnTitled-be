@@ -1,0 +1,11 @@
+POST https://aircuve.ajou.ac.kr/login/guest
+Content-Type: text/plain;charset=UTF-8
+
+{
+"guestCompany": "",
+"guestEmail":" gmyun1999@ajou.ac.kr",
+"guestName": "윤규민",
+"guestPhone": "01027255262",
+"purpose": ""
+}
+
