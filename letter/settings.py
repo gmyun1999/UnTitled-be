@@ -43,7 +43,7 @@ initialize_firebase()
 SECRET_KEY = env("SECRET_KEY", default="")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 LOG_FILE = "logs/debug.log"
 if not os.path.exists("logs"):
@@ -102,6 +102,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "drf_yasg",
     "corsheaders",
     "user",
     "lucky_letter",
@@ -212,8 +213,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
 
+# STATIC_ROOT는 collectstatic으로 파일을 모을 경로
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+# STATICFILES_DIRS는 개발 중 참조할 정적 파일 경로
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 

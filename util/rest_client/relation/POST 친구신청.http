@@ -1,4 +1,4 @@
-POST {{letter-host}}/me/relationship/
+POST {{prod.letter-host}}/me/relationship/
 Content-Type: application/json
 Authorization: Bearer {{letter-jwt}}
 

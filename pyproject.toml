@@ -22,6 +22,7 @@ bleach = "^6.1.0"
 firebase-admin = "^6.5.0"
 django-environ = "^0.11.2"
 pymysql = "^1.1.1"
+drf-yasg = "^1.21.8"
 
 
 [tool.poetry.group.dev.dependencies]
