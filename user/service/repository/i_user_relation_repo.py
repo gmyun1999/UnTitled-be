@@ -39,7 +39,7 @@ class IUserRelationRepo(metaclass=ABCMeta):
     @abstractmethod
     def fetch_relations_with_user(
         self, filter: Filter, exclude_fields: dict[str, list[str]] | None = None
-    ) -> list[dict[str, str]] | None:
+    ) -> list[dict[str, str]]:
         pass
 
     @abstractmethod

@@ -1,5 +1,12 @@
-GET {{letter-host}}/me/relationship/?relation=FRIEND&status=ACCEPT
+GET {{letter-host}}/me/relationship/?relation=FRIEND&status=PENDING
 Content-Type: application/json
 Authorization: Bearer {{letter-jwt}}
 
 // 친구 목록 및 친구 수락 상태 및 등등 다양하게 조회할수있음(ACCEPT, REJECT, PENDING)
+
+# query parameter 설명:
+# relation -> 현재는 FRIEND만 가능
+# status -> ACCEPT, REJECT, PENDING (수락, 거절, 대기중)
+# page -> 페이지네이션을 위한 페이지. default = 1
+# size -> 페이지네이션을 위한 사이즈. default = 10
+# 예시 : /me/relationship/?relation=FRIEND&status=ACCEPT&page=1&size=10

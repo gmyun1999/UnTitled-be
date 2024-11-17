@@ -1,7 +1,7 @@
 import json
 from dataclasses import asdict, dataclass
 from enum import Enum
-from typing import Any, Type
+from typing import Any, Generic, Type, TypeVar
 
 from arrow import Arrow
 from dacite import Config, from_dict
@@ -27,3 +27,17 @@ class Domain:
             return {key: value for key, value in dto.items() if key not in excludes}
         else:
             return dto
+
+
+T = TypeVar("T")
+
+
+@dataclass
+class PagedResult(Generic[T]):
+    items: list[T]
+    total_items: int
+    total_pages: int
+    current_page: int
+    page_size: int
+    has_previous: bool
+    has_next: bool

@@ -3,3 +3,8 @@ Content-Type: application/json
 Authorization: Bearer {{letter-jwt}}
 
 # 나의 알림 목록 모두 가져오기.
+
+# query parameter 설명:
+#  page -> 페이지네이션을 위한 페이지. default = 1
+#  size -> 페이지네이션을 위한 사이즈. default = 10
+#  예시 : /me/notification/?page=1&size=10

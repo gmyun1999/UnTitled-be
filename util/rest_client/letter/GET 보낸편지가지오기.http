@@ -8,3 +8,8 @@ Authorization: Bearer {{letter-jwt}}
 # letter_id의 id ->letter 그자체를 의미하는 id.
 # 즉 내 편지함에 있는 편지를 가져오려면 id를 사용해야함.
 
+# query parameter 설명: 
+# page -> 페이지네이션을 위한 페이지. default = 1
+# size -> 페이지네이션을 위한 사이즈. default = 10
+# 예시 : /me/letter-box/sent/?page=1&size=10
+

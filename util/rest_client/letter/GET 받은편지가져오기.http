@@ -4,3 +4,9 @@ Authorization: Bearer {{letter-jwt}}
 
 
 # 내 letter-box에 있는 것들중 받은 편지를 모두 반환.
+
+# query parameter 설명: 
+# page -> 페이지네이션을 위한 페이지. default = 1
+# size -> 페이지네이션을 위한 사이즈. default = 10
+# 예시 : /me/letter-box/received/?page=1&size=10
+

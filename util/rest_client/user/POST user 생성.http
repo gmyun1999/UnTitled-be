@@ -2,8 +2,8 @@ POSt {{letter-host}}/user/
 Content-Type: application/json
 
 {
-    "app_id": "app4",
-    "name": "4"
+    "app_id": "app61",
+    "name": "61"
 }
 
 # access token이랑 refresh 넘겨줍니다.

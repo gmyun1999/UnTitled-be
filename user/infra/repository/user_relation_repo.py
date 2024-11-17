@@ -115,7 +115,7 @@ class UserRelationRepo(IUserRelationRepo):
         self,
         filter: IUserRelationRepo.Filter,
         exclude_fields: dict[str, list[str]] | None = None,
-    ) -> list[dict[str, str]] | None:
+    ) -> list[dict[str, str]]:
         """
         User 모델과 UserRelation을 조인하여 필터링된 결과를 반환.
         """
@@ -139,7 +139,7 @@ class UserRelationRepo(IUserRelationRepo):
             queryset, many=True, exclude_fields=exclude_fields or {}
         )
 
-        return serializer.data if serializer.data else None
+        return serializer.data
 
     def create(self, UserRelation_vo: UserRelationVo) -> UserRelationVo:
         dict_user_relation = UserRelation_vo.to_dict()

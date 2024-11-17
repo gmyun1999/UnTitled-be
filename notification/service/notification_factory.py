@@ -56,14 +56,14 @@ class NotificationTemplateFactory:
         self, related_object: object
     ) -> NotificationTemplateResponse:
         return NotificationTemplateResponse(
-            title="시스템 알림", message="예시: 시스템에서 중요한 업데이트가 있었습니다."
+            title="시스템 알림", message="예시: 시스템에서 중요한 업데이트가 있었습니다.", related_domain=None
         )
 
     def _create_advertisement_template(
         self, related_object: object
     ) -> NotificationTemplateResponse:
         return NotificationTemplateResponse(
-            title="광고", message="예시: 특별 할인 이벤트가 시작되었습니다!"
+            title="광고", message="예시: 특별 할인 이벤트가 시작되었습니다!", related_domain=None
         )
 
     def _create_friend_request_template(
@@ -119,7 +119,9 @@ class NotificationTemplateFactory:
     def _create_default_template(
         self, related_object: object
     ) -> NotificationTemplateResponse:
-        return NotificationTemplateResponse(title="알림", message="새로운 알림이 도착했습니다.")
+        return NotificationTemplateResponse(
+            title="알림", message="새로운 알림이 도착했습니다.", related_domain=None
+        )
 
     # def _create_sent_letter_template(self, related_object: Letter) -> dict[str, str]:
 

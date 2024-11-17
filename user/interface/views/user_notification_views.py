@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 
 from common.interface.http_response import standard_response
 from common.interface.validators import validate_body, validate_query_params
+from common.paging import Paginator
 from notification.domain.notification import NotificationType
 from user.domain.user_role import UserRole
 from user.domain.user_token import UserTokenPayload, UserTokenType
@@ -54,13 +55,19 @@ def update_my_notification_as_read(
     )
 
 
+class PageParams(BaseModel):
+    page: int = Field(default=1, ge=1)
+    page_size: int = Field(default=10, ge=1)
+
+
 class UserNotificationView(APIView):
     def __init__(self):
         self.user_notification_service = UserNotificationService()
         self.user_token_manager = UserTokenManager()
 
     @validate_token(roles=[UserRole.USER], validate_type=UserTokenType.ACCESS)
-    def get(self, request, token_payload: UserTokenPayload):
+    @validate_query_params(PageParams, view_type="class")
+    def get(self, request, token_payload: UserTokenPayload, params: PageParams):
         """
         알림 가져오기
         """
@@ -70,9 +77,24 @@ class UserNotificationView(APIView):
         my_notification = self.user_notification_service.get_my_notification(
             user_vo=current_user
         )
+
+        paged_result = Paginator.paginate(
+            items=my_notification,
+            page=params.page,
+            page_size=params.page_size,
+        )
+        response_data = {
+            "items": paged_result.items,
+            "total_items": paged_result.total_items,
+            "total_pages": paged_result.total_pages,
+            "current_page": paged_result.current_page,
+            "page_size": paged_result.page_size,
+            "has_previous": paged_result.has_previous,
+            "has_next": paged_result.has_next,
+        }
         return standard_response(
             message="fetch my notification",
-            data=my_notification,
+            data=response_data,
             http_status=status.HTTP_200_OK,
         )
 

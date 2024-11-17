@@ -21,7 +21,7 @@ class UserRelationService:
         user_id: str,
         relation_status: str | None = None,
         relation_type: str | None = None,
-    ) -> list[dict[str, str]] | None:
+    ) -> list[dict[str, str]]:
         """
         관계 정보를 가져오는 함수.
         """

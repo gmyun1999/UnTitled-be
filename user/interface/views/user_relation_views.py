@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 
 from common.interface.http_response import standard_response
 from common.interface.validators import validate_body, validate_query_params
+from common.paging import Paginator
 from common.service.token.i_token_manager import ITokenManager
 from user.domain.user import RelationStatus, RelationType
 from user.domain.user_role import UserRole
@@ -30,6 +31,8 @@ class MyRelationshipsView(APIView):
         status: Literal[
             RelationStatus.PENDING, RelationStatus.REJECT, RelationStatus.ACCEPT
         ] | None = None
+        page: int = Field(default=1, ge=1)
+        page_size: int = Field(default=10, ge=1)
 
     @dataclass
     class CreateRelationParams(BaseModel):
@@ -62,9 +65,25 @@ class MyRelationshipsView(APIView):
             relation_status=params.status,
             relation_type=params.relation,
         )
-        data: dict = {"relation": user_relation}
+        paged_result = Paginator.paginate(
+            items=user_relation,
+            page=params.page,
+            page_size=params.page_size,
+        )
+        response_data = {
+            "items": paged_result.items,
+            "total_items": paged_result.total_items,
+            "total_pages": paged_result.total_pages,
+            "current_page": paged_result.current_page,
+            "page_size": paged_result.page_size,
+            "has_previous": paged_result.has_previous,
+            "has_next": paged_result.has_next,
+        }
+
         return standard_response(
-            message="fetch user relation", data=data, http_status=status.HTTP_200_OK
+            message="fetch user relation",
+            data=response_data,
+            http_status=status.HTTP_200_OK,
         )
 
     @validate_token(roles=[UserRole.USER], validate_type=UserTokenType.ACCESS)

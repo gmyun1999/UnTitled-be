@@ -8,11 +8,14 @@ from rest_framework import status
 from rest_framework.parsers import JSONParser
 
 
-def validate_query_params(model: Type[BaseModel]):
+def validate_query_params(model: Type[BaseModel], view_type: str = "class"):
     def decorated_func(f):
         @wraps(f)
         def wrapper(*args, **kwargs):
-            request = args[1]
+            if view_type == "class":
+                request = args[1]
+            elif view_type == "function":
+                request = args[0]
             params = request.GET.dict()
             try:
                 validated_params = model.model_validate(params)

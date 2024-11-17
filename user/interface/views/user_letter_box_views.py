@@ -1,7 +1,10 @@
+from pydantic import BaseModel, Field
 from rest_framework import status
 from rest_framework.decorators import api_view
 
 from common.interface.http_response import standard_response
+from common.interface.validators import validate_query_params
+from common.paging import Paginator
 from user.domain.user_role import UserRole
 from user.domain.user_token import UserTokenPayload, UserTokenType
 from user.infra.token.user_token_manager import UserTokenManager
@@ -37,13 +40,20 @@ def get_specific_letter(
     )
 
 
+class PageParams(BaseModel):
+    page: int = Field(default=1, ge=1)
+    page_size: int = Field(default=10, ge=1)
+
+
 @api_view(["GET"])
 @validate_token(
     roles=[UserRole.USER], validate_type=UserTokenType.ACCESS, view_type="function"
 )
+@validate_query_params(PageParams, view_type="function")
 def get_received_letters(
     request,
     token_payload: UserTokenPayload,
+    params: PageParams,
 ):
     user_letter_box_service = UserLetterBoxService()
     user_token_manager = UserTokenManager()
@@ -58,9 +68,22 @@ def get_received_letters(
             data=letters_data,
             http_status=status.HTTP_200_OK,
         )
+    paged_result = Paginator.paginate(
+        items=letters_data, page=params.page, page_size=params.page_size
+    )
+
+    response_data = {
+        "items": paged_result.items,
+        "total_items": paged_result.total_items,
+        "total_pages": paged_result.total_pages,
+        "current_page": paged_result.current_page,
+        "page_size": paged_result.page_size,
+        "has_previous": paged_result.has_previous,
+        "has_next": paged_result.has_next,
+    }
     return standard_response(
         message="fetch received letters",
-        data=letters_data,
+        data=response_data,
         http_status=status.HTTP_200_OK,
     )
 
@@ -69,9 +92,11 @@ def get_received_letters(
 @validate_token(
     roles=[UserRole.USER], validate_type=UserTokenType.ACCESS, view_type="function"
 )
+@validate_query_params(PageParams, view_type="function")
 def get_sent_letters(
     request,
     token_payload: UserTokenPayload,
+    params: PageParams,
 ):
     user_letter_box_service = UserLetterBoxService()
     user_token_manager = UserTokenManager()
@@ -84,8 +109,22 @@ def get_sent_letters(
             data=letters_data,
             http_status=status.HTTP_200_OK,
         )
+    paged_result = Paginator.paginate(
+        items=letters_data, page=params.page, page_size=params.page_size
+    )
+
+    response_data = {
+        "items": paged_result.items,
+        "total_items": paged_result.total_items,
+        "total_pages": paged_result.total_pages,
+        "current_page": paged_result.current_page,
+        "page_size": paged_result.page_size,
+        "has_previous": paged_result.has_previous,
+        "has_next": paged_result.has_next,
+    }
+
     return standard_response(
-        message="fetch received letters",
-        data=letters_data,
+        message="fetch sent letters",
+        data=response_data,
         http_status=status.HTTP_200_OK,
     )
