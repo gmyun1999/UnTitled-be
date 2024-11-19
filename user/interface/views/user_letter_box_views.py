@@ -41,8 +41,8 @@ def get_specific_letter(
 
 
 class PageParams(BaseModel):
-    page: int = Field(default=1, ge=1)
-    page_size: int = Field(default=10, ge=1)
+    page: int | None = Field(default=None, ge=1)
+    page_size: int | None = Field(default=None, ge=1)
 
 
 @api_view(["GET"])
@@ -68,6 +68,14 @@ def get_received_letters(
             data=letters_data,
             http_status=status.HTTP_200_OK,
         )
+
+    if params.page is None or params.page_size is None:  # pragma: no cover
+        return standard_response(
+            message="fetch received letters",
+            data=letters_data,
+            http_status=status.HTTP_200_OK,
+        )
+
     paged_result = Paginator.paginate(
         items=letters_data, page=params.page, page_size=params.page_size
     )
@@ -109,6 +117,13 @@ def get_sent_letters(
             data=letters_data,
             http_status=status.HTTP_200_OK,
         )
+    if params.page is None or params.page_size is None:
+        return standard_response(
+            message="fetch sent letters",
+            data=letters_data,
+            http_status=status.HTTP_200_OK,
+        )
+
     paged_result = Paginator.paginate(
         items=letters_data, page=params.page, page_size=params.page_size
     )

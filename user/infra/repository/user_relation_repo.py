@@ -204,3 +204,28 @@ class UserRelationRepo(IUserRelationRepo):
         deleted_count, _ = UserRelation.objects.filter(q_objects).delete()
 
         return deleted_count
+
+    def delete_all_friendships_for_user(
+        self,
+        my_id: str,
+        relation_type: str = RelationType.FRIEND.value,
+        relation_status: str = RelationStatus.ACCEPT.value,
+    ) -> int:
+        """
+        주어진 사용자 ID(my_id)가 to_id 또는 from_id로 포함된 모든 ACCEPT 상태의 관계를 삭제
+        - (my_id, to_id, ACCEPT) 또는 (from_id, my_id, ACCEPT)
+        삭제된 수 반환
+        """
+        q_objects = Q(
+            to_id=my_id,
+            relation_status=relation_status,
+            relation_type=relation_type,
+        ) | Q(
+            from_id=my_id,
+            relation_status=relation_status,
+            relation_type=relation_type,
+        )
+
+        deleted_count, _ = UserRelation.objects.filter(q_objects).delete()
+
+        return deleted_count

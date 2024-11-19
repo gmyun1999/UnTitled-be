@@ -12,7 +12,7 @@ class IUserLetterBoxRepo(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def get_my_letter(self, letter_id: str, user_id: str) -> dict[str, Any] | None:
+    def get_my_letter(self, id: str, user_id: str) -> dict[str, Any] | None:
         pass
 
     @abstractmethod

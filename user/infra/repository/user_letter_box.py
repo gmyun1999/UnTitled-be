@@ -19,9 +19,9 @@ class UserLetterBoxRepo(IUserLetterBoxRepo):
         serializer = NestedUserLetterBoxSerializer(letters, many=True)
         return serializer.data if serializer.data else None
 
-    def get_my_letter(self, letter_id: str, user_id: str) -> dict[str, Any] | None:
+    def get_my_letter(self, id: str, user_id: str) -> dict[str, Any] | None:
         try:
-            letter = UserLetterBox.objects.get(letter_id=letter_id, user_id=user_id)
+            letter = UserLetterBox.objects.get(id=id, user_id=user_id)
 
             serializer = NestedUserLetterBoxSerializer(letter)
             dicted_data = serializer.data

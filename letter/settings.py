@@ -102,7 +102,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "drf_yasg",
     "corsheaders",
     "user",
     "lucky_letter",
@@ -119,6 +118,22 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+# drf-spectacular SWAGGER 설정
+REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+SPECTACULAR_SETTINGS = {
+    "TITLE": "My API",
+    "DESCRIPTION": "This is the API documentation for LETTER-BE.",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,  # 스키마 엔드포인트를 포함 여부 설정
+    "SERVE_PERMISSIONS": [],  # 문서 접근에 대한 권한 설정, 기본은 공개
+    "SWAGGER_UI_SETTINGS": {
+        "persistAuthorization": True,  # 페이지 새로고침 시 인증 유지 여부
+    },
+}
+
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_HEADERS = ["*"]

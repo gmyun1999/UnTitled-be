@@ -22,6 +22,12 @@ class UserRepo(IUserRepo):
         except User.DoesNotExist:
             return None
 
+    def get_users_by_app_ids(self, filter: IUserRepo.Filter) -> list[UserVo]:
+        users = User.objects.filter(app_id__in=filter.app_ids)
+        serializer = UserSerializer(users, many=True)
+        users_list = [UserVo.from_dict(dto=user_data) for user_data in serializer.data]
+        return users_list
+
     def get_bulk(self):
         pass
 

@@ -18,6 +18,10 @@ class UserService:
         filter = self.user_repo.Filter(app_id=app_id)
         return self.user_repo.get_user(filter=filter)
 
+    def get_users_by_app_ids(self, app_ids: list[str]) -> list[UserVo]:
+        filter = self.user_repo.Filter(app_ids=app_ids)
+        return self.user_repo.get_users_by_app_ids(filter=filter)
+
     def check_duplicate_app_id(self, app_id: str) -> bool:
         """
         이미 있으면 true, 없으면 false를 반환.

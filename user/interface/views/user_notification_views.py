@@ -1,6 +1,7 @@
 from dataclasses import dataclass
-from typing import Any, Literal
 
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import OpenApiParameter, OpenApiResponse, extend_schema
 from pydantic import BaseModel, Field
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -12,6 +13,16 @@ from common.paging import Paginator
 from notification.domain.notification import NotificationType
 from user.domain.user_role import UserRole
 from user.domain.user_token import UserTokenPayload, UserTokenType
+from user.infra.models.swagger.user_notification import (
+    GetAllUserNotificationSettingSerializer,
+    GetNestedPagingUserNotificationSerializer,
+    GetNestedUserNotificationSerializer,
+    GetUserNotificationSerializer,
+    GetUserNotificationSettingSerializer,
+    PutNotificationBodyRequestSerializer,
+    PutUserNotificationSettingSerializer,
+)
+from user.infra.models.swagger.user_relation.post import ErrorResponseSerializer
 from user.infra.token.user_token_manager import UserTokenManager
 from user.interface.validator.user_token_validator import validate_token
 from user.service.user_notification_service import UserNotificationService
@@ -22,6 +33,17 @@ class PutNotificationBody(BaseModel):
     is_read: bool
 
 
+@extend_schema(
+    summary="알림 상태 변경",
+    description="읽음으로 변경",
+    responses={
+        200: GetUserNotificationSerializer,
+        400: OpenApiResponse(
+            response=ErrorResponseSerializer, description="no notification id"
+        ),
+    },
+    request=PutNotificationBodyRequestSerializer,
+)
 @api_view(["PUT"])
 @validate_token(
     roles=[UserRole.USER], validate_type=UserTokenType.ACCESS, view_type="function"
@@ -56,8 +78,8 @@ def update_my_notification_as_read(
 
 
 class PageParams(BaseModel):
-    page: int = Field(default=1, ge=1)
-    page_size: int = Field(default=10, ge=1)
+    page: int | None = Field(default=None, ge=1)
+    page_size: int | None = Field(default=None, ge=1)
 
 
 class UserNotificationView(APIView):
@@ -65,6 +87,15 @@ class UserNotificationView(APIView):
         self.user_notification_service = UserNotificationService()
         self.user_token_manager = UserTokenManager()
 
+    @extend_schema(
+        summary="알림 가져오기",
+        description="알림을 가져옴. 쿼리파람 안념겨주면 전체 알림을 가져옴 items 안에있는 배열이 반환됨",
+        responses={200: GetNestedPagingUserNotificationSerializer},
+        parameters=[
+            OpenApiParameter("page", OpenApiTypes.INT, description="페이지 번호"),
+            OpenApiParameter("page_size", OpenApiTypes.INT, description="페이지 크기"),
+        ],
+    )
     @validate_token(roles=[UserRole.USER], validate_type=UserTokenType.ACCESS)
     @validate_query_params(PageParams, view_type="class")
     def get(self, request, token_payload: UserTokenPayload, params: PageParams):
@@ -77,6 +108,12 @@ class UserNotificationView(APIView):
         my_notification = self.user_notification_service.get_my_notification(
             user_vo=current_user
         )
+        if params.page is None or params.page_size is None:
+            return standard_response(
+                message="fetch my notification",
+                data=my_notification,
+                http_status=status.HTTP_200_OK,
+            )
 
         paged_result = Paginator.paginate(
             items=my_notification,
@@ -113,6 +150,19 @@ class UserNotificationSettingView(APIView):
         self.user_notification_service = UserNotificationService()
         self.user_token_manager = UserTokenManager()
 
+    @extend_schema(
+        summary="알림 세팅 가져오기",
+        description="알림 세팅 가져오기 쿼리 파람 안주면 전체 알림 세팅을 가져옴, items 안에있는 배열이 반환됨",
+        responses={200: GetAllUserNotificationSettingSerializer},
+        parameters=[
+            OpenApiParameter(
+                "notification_type",
+                OpenApiTypes.STR,
+                description="알림 타입 (SYSTEM, ADVERTISEMENT, FRIEND_REQUEST, RECEIVED_LETTER)",
+                required=False,
+            )
+        ],
+    )
     @validate_token(roles=[UserRole.USER], validate_type=UserTokenType.ACCESS)
     @validate_query_params(GetNotificationSettingParams)
     def get(
@@ -147,6 +197,22 @@ class UserNotificationSettingView(APIView):
             http_status=status.HTTP_200_OK,
         )
 
+    @extend_schema(
+        summary="알림 세팅 업데이트 ",
+        description="알림 세팅 업데이트 notification_type를 안주면 전체 알림 세팅을 업데이트함",
+        responses={200: PutUserNotificationSettingSerializer},
+        parameters=[
+            OpenApiParameter(
+                "notification_type",
+                OpenApiTypes.STR,
+                description="알림 타입 (SYSTEM, ADVERTISEMENT, FRIEND_REQUEST, RECEIVED_LETTER)",
+                required=False,
+            ),
+            OpenApiParameter(
+                "is_push_allow", OpenApiTypes.BOOL, description="push 허용여부"
+            ),
+        ],
+    )
     @validate_token(roles=[UserRole.USER], validate_type=UserTokenType.ACCESS)
     @validate_query_params(PutNotificationSettingParams)
     def put(

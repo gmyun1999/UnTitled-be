@@ -9,9 +9,11 @@ class IUserRepo(metaclass=ABCMeta):
             self,
             user_id: str | None = None,
             app_id: str | None = None,
+            app_ids: list[str] | None = None,
         ):
             self.user_id = user_id
             self.app_id = app_id
+            self.app_ids = app_ids
 
     @abstractmethod
     def get_user(self, filter: Filter) -> userVo | None:

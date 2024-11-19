@@ -123,3 +123,15 @@ class UserRelationService:
             relation_type=relation_type,
             relation_status=relation_status,
         )
+
+    def delete_my_relation_bulk(
+        self,
+        my_id: str,
+        relation_type: str = RelationType.FRIEND.value,
+        relation_status: str = RelationStatus.ACCEPT.value,
+    ):
+        return self.user_relation_repo.delete_all_friendships_for_user(
+            my_id=my_id,
+            relation_type=relation_type,
+            relation_status=relation_status,
+        )

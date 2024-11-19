@@ -65,3 +65,12 @@ class IUserRelationRepo(metaclass=ABCMeta):
         relation_status: str = RelationStatus.ACCEPT.value,
     ) -> int:
         pass
+
+    @abstractmethod
+    def delete_all_friendships_for_user(
+        self,
+        my_id: str,
+        relation_type: str = RelationType.FRIEND.value,
+        relation_status: str = RelationStatus.ACCEPT.value,
+    ) -> int:
+        pass
