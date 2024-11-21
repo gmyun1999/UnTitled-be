@@ -1,3 +1,5 @@
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import OpenApiParameter, OpenApiResponse, extend_schema
 from pydantic import BaseModel, Field
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -7,11 +9,17 @@ from common.interface.validators import validate_query_params
 from common.paging import Paginator
 from user.domain.user_role import UserRole
 from user.domain.user_token import UserTokenPayload, UserTokenType
+from user.infra.models.swagger.user_letter import LetterBoxResponseSerializer
 from user.infra.token.user_token_manager import UserTokenManager
 from user.interface.validator.user_token_validator import validate_token
 from user.service.user_letter_box_service import UserLetterBoxService
 
 
+@extend_schema(
+    summary=" 내 메일함의 특정 편지 가져오기",
+    description="path param으로 letter_box의 id를 넘긴다",
+    responses={200: LetterBoxResponseSerializer},
+)
 @api_view(["GET"])
 @validate_token(
     roles=[UserRole.USER], validate_type=UserTokenType.ACCESS, view_type="function"
