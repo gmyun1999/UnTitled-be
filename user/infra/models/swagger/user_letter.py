@@ -50,3 +50,25 @@ class LetterBoxResponseSerializer(serializers.Serializer):
     is_read = serializers.BooleanField()
     delivered_at = serializers.DateTimeField()
     user_id = serializers.UUIDField()
+
+
+class LetterBoxListResponseSerializer(serializers.ListSerializer):
+    child = LetterBoxResponseSerializer()
+
+
+class LetterBoxListStandardResponseSerializer(serializers.Serializer):
+    message = serializers.CharField()
+    data = LetterBoxListResponseSerializer()
+    http_status = serializers.IntegerField()
+
+
+class LetterBoxStandardResponseSerializer(serializers.Serializer):
+    message = serializers.CharField()
+    data = LetterBoxResponseSerializer()
+    http_status = serializers.IntegerField()
+
+
+class LetterStandardResponseSerializer(serializers.Serializer):
+    message = serializers.CharField()
+    data = LetterResponseSerializer()
+    http_status = serializers.IntegerField()

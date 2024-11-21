@@ -4,7 +4,7 @@ Authorization: Bearer {{letter-jwt}}
 
 
 {
-  "to_app_id": "test2",
+  "to_app_id": "test3",
   "is_anonymous": "False",
   "writing_pad_id": "291ae98a-81d0-4733-a98b-3f4b9cfb8ca4",
   "envelope_id": "ca978bf2-2d97-4b47-be91-c12bb35a8b60",
@@ -14,6 +14,15 @@ Authorization: Bearer {{letter-jwt}}
   "font": "NATO_SANS_KR"
 }
 
+#local test용
+  # "writing_pad_id": "f3c8356b-1f8c-456c-a865-c415720734c0",
+  # "envelope_id": "547b0d9f-79e6-4fdf-a054-d52c06c84aac",
+  # "stamp_id": "b0186622-cd39-4b36-a2ce-3244e9aff93f",
+
+#prod test용
+  # "writing_pad_id": "291ae98a-81d0-4733-a98b-3f4b9cfb8ca4",
+  # "envelope_id": "ca978bf2-2d97-4b47-be91-c12bb35a8b60",
+  # "stamp_id": "fa873e54-aaad-42ad-8d69-95ae3bbd1eec",
 # 만약 답장이 아니라 편지를 처음 보내는거라면 to_letter_id를 넘겨주지않는다
 # 만약 답장인경우 답을 해야하는 편지의 letter_id에 맞게 넘겨준다.
 # 이때 to_letter_id의 주인이 to_app_id 여야함. 관련된 기타 예외상황 모두 처리해둠
