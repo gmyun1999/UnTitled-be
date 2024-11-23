@@ -123,8 +123,8 @@ class UserRelationRepo(IUserRelationRepo):
         """
 
         queryset = UserRelation.objects.select_related("to_id", "from_id")
-        if filter.to_id:
-            queryset = queryset.filter(to_id__id=filter.to_id)
+        if filter.id:
+            queryset = queryset.filter(id=filter.id)
         if filter.to_id:
             queryset = queryset.filter(to_id__id=filter.to_id)
         if filter.from_id:
