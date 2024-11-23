@@ -62,6 +62,8 @@ class UserRelationRepo(IUserRelationRepo):
     def get_one(self, filter: IUserRelationRepo.Filter) -> UserRelationVo | None:
         user_relation = UserRelation.objects.all()
 
+        if filter.id:
+            user_relation = user_relation.filter(id=filter.id)
         if filter.relation_type:
             user_relation = user_relation.filter(relation_type=filter.relation_type)
         if filter.relation_status:
@@ -121,7 +123,8 @@ class UserRelationRepo(IUserRelationRepo):
         """
 
         queryset = UserRelation.objects.select_related("to_id", "from_id")
-
+        if filter.to_id:
+            queryset = queryset.filter(to_id__id=filter.to_id)
         if filter.to_id:
             queryset = queryset.filter(to_id__id=filter.to_id)
         if filter.from_id:

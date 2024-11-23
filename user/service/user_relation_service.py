@@ -16,6 +16,29 @@ class UserRelationService:
 
         self.notification_service = NotificationService()
 
+    def get_relation_by_id(
+        self,
+        relation_id: str,
+    ):
+        return self.user_relation_repo.fetch_relations_with_user(
+            filter=self.user_relation_repo.Filter(id=relation_id),
+            exclude_fields={
+                UserRelationVo.FIELD_ID: [],
+                UserRelationVo.FIELD_CREATED_AT: [],
+                UserRelationVo.FIELD_UPDATED_AT: [],
+                UserRelationVo.FIELD_TO_ID: [
+                    UserVo.FIELD_ID,
+                    UserVo.FIELD_CREATED_AT,
+                    UserVo.FIELD_UPDATED_AT,
+                ],
+                UserRelationVo.FIELD_FROM_ID: [
+                    UserVo.FIELD_ID,
+                    UserVo.FIELD_CREATED_AT,
+                    UserVo.FIELD_UPDATED_AT,
+                ],
+            },
+        )
+
     def get_relations(
         self,
         user_id: str,

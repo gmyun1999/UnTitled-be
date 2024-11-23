@@ -6,6 +6,7 @@ from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiParameter, OpenApiResponse, extend_schema
 from pydantic import BaseModel, Field
 from rest_framework import status
+from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 
 from common.interface.http_response import standard_response
@@ -16,6 +17,7 @@ from user.domain.user import RelationStatus, RelationType
 from user.domain.user_role import UserRole
 from user.domain.user_token import UserTokenPayload, UserTokenType
 from user.infra.models.swagger.user_relation.get_user_relation import (
+    GetUserRelationResponseSerializer,
     UserRelationResponseSerializer,
 )
 from user.infra.models.swagger.user_relation.post import (
@@ -282,3 +284,33 @@ class MyRelationshipsView(APIView):
         return standard_response(
             message="delete relation", http_status=status.HTTP_200_OK
         )
+
+
+@extend_schema(
+    summary="사용자 관계 가져오기",
+    description="relation_id를 이용해서 특정 관계를 가져온다.",
+    responses={200: GetUserRelationResponseSerializer},
+)
+@api_view(["GET"])
+@validate_token(
+    roles=[UserRole.USER], validate_type=UserTokenType.ACCESS, view_type="function"
+)
+def get_relation(
+    request: HttpRequest, relation_id: str, token_payload: UserTokenPayload
+):
+    user_relation_service = UserRelationService()
+    # TODO: 관련 없는사람의 relation 못보게 막기
+    # user_service = UserService()
+    # user = self.user_token_manager.get_current_user(user_payload_vo=token_payload)
+    user_relation = user_relation_service.get_relation_by_id(relation_id=relation_id)
+    if user_relation is None:
+        return standard_response(
+            message="fetch my relationship",
+            data=None,
+            http_status=status.HTTP_200_OK,
+        )
+    return standard_response(
+        message="fetch my relationship",
+        data=user_relation,
+        http_status=status.HTTP_200_OK,
+    )

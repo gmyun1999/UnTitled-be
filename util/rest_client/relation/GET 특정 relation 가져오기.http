@@ -1,0 +1,6 @@
+GET {{letter-host}}/me/relationship/f68116fc-5887-4aaa-9e64-9c5c923d4da9
+Content-Type: application/json
+Authorization: Bearer {{letter-jwt}}
+
+
+# relation_id를 path parameter로 넘겨서 관련 data를 받아온다

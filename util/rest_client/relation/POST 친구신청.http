@@ -5,7 +5,7 @@ Authorization: Bearer {{letter-jwt}}
 {
     "relation" : "FRIEND",
     "status" : "PENDING",
-    "to_app_id": "app10"
+    "to_app_id": "test00"
 }
 
 # 이미 친구 신청을 보냈으면 409 conflict 반환

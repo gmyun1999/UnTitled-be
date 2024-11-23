@@ -31,3 +31,9 @@ class UserRelationResponseSerializer(serializers.Serializer):
     message = serializers.CharField()
     data = UserRelationDataSerializer()
     http_status = serializers.IntegerField()
+
+
+class GetUserRelationResponseSerializer(serializers.Serializer):
+    data = UserRelationItemSerializer()
+    message = serializers.CharField()
+    http_status = serializers.IntegerField()

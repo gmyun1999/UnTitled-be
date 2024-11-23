@@ -14,11 +14,12 @@ from user.interface.views.user_notification_views import (
     UserNotificationView,
     update_my_notification_as_read,
 )
-from user.interface.views.user_relation_views import MyRelationshipsView
+from user.interface.views.user_relation_views import MyRelationshipsView, get_relation
 from user.interface.views.user_views import UserCheckDuplicateView, UserMeView, UserView
 
 urlpatterns = [
     # 인증된 user(자기자신)
+    path("me/relationship/<str:relation_id>", get_relation, name="get_relation"),
     path("me/relationship/", MyRelationshipsView.as_view(), name="relation-me"),
     path("me/letter-box/sent/", get_sent_letters, name="get_sent_letters"),
     path("me/letter-box/received/", get_received_letters, name="get_received_letters"),

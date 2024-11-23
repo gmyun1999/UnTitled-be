@@ -8,12 +8,14 @@ class IUserRelationRepo(metaclass=ABCMeta):
     class Filter:
         def __init__(
             self,
+            id: str | None = None,
             relation_type: str | None = None,
             relation_status: str | None = None,
             to_id: str | None = None,
             from_id: str | None = None,
             user_id: str | None = None,
         ):
+            self.id = id
             self.relation_type = relation_type
             self.relation_status = relation_status
             self.to_id = to_id
