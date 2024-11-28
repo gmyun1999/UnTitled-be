@@ -6,6 +6,13 @@ from common.domain import Domain
 
 class FontType(StrEnum):
     NATO_SANS_KR = "NATO_SANS_KR"
+    SPACE_MONO = "space-mono"
+    GOWUN_BATANG = "gowun-batang"
+    HAKGYO_BADASSEUGI = "hakgyo-badasseugi"
+    HAKGYO_GEURIMILGI = "hakgyo-geurimilgi"
+    MONOPLEXKR = "monoplexkr"
+    SUITE = "suite"
+
     # 어떤것들이 있을거임
 
 
