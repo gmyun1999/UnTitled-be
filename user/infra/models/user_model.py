@@ -23,14 +23,14 @@ class UserRelation(models.Model):
         max_length=36,
         db_constraint=False,
         related_name="user_relation_to_id",
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         null=True,
     )
     from_id = models.ForeignKey(
         to=User,
         max_length=36,
         db_constraint=False,
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         related_name="user_relation_from_id",
         null=True,
     )
