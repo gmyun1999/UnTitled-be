@@ -2,8 +2,7 @@ import uuid
 from dataclasses import dataclass
 
 from django.http import JsonResponse
-from drf_spectacular.types import OpenApiTypes
-from drf_spectacular.utils import OpenApiParameter, OpenApiResponse, extend_schema
+from drf_spectacular.utils import extend_schema
 from pydantic import BaseModel, Field
 from rest_framework import status
 from rest_framework.views import APIView

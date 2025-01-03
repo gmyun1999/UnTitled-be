@@ -2,6 +2,7 @@ from django.urls import path
 
 from user.interface.views.user_auth_views import (
     RefreshTokenView,
+    login,
     save_push_service_token,
 )
 from user.interface.views.user_letter_box_views import (
@@ -47,5 +48,6 @@ urlpatterns = [
         name="userDuplicateCheck",
     ),
     path("user/push-token/", save_push_service_token, name="save_push_service_token"),
+    path("user/login/", login, name="login"),
     path("user/", view=UserView.as_view(), name="user"),  # 유저들, 혹은 유저
 ]

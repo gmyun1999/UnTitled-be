@@ -17,8 +17,8 @@ class UserTokenType(StrEnum):
 
 
 class UserTokenExp(IntEnum):
-    ACCESS_EXP = 86_400  # 24시간
-    REFRESH_EXP = 5_184_000  # 2달
+    ACCESS_EXP = 300  # 5분 (TEMP)
+    REFRESH_EXP = 5_184_000  # 2 달
 
 
 @dataclass

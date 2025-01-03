@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import Literal
 
 from django.http import HttpRequest
+from drf_spectacular.utils import extend_schema
 from pydantic import BaseModel, Field
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -11,6 +12,10 @@ from common.interface.http_response import standard_response
 from common.interface.validators import validate_body
 from user.domain.user_role import UserRole
 from user.domain.user_token import PushServiceType, UserTokenPayload, UserTokenType
+from user.infra.models.swagger.user import (
+    CreateUserBodyRequestSerializer,
+    UserCreateStandardResponseSerializer,
+)
 from user.infra.token.user_token_manager import UserTokenManager
 from user.interface.validator.user_token_validator import validate_token
 from user.service.user_push_service import UserPushService
@@ -72,4 +77,36 @@ def save_push_service_token(
         message="save token successfully",
         data=user_push_token.to_dict(),
         http_status=status.HTTP_201_CREATED,
+    )
+
+
+@dataclass
+class LoginBody(BaseModel):
+    app_id: str = Field(max_length=16)
+    name: str = Field(max_length=64)
+
+
+@api_view(["POST"])
+@extend_schema(
+    summary="login",
+    description="app_id, name 넘기면됨,token 반환",
+    request=CreateUserBodyRequestSerializer,
+    responses={200: UserCreateStandardResponseSerializer},
+)
+@validate_body(LoginBody, view_type="function")
+def login(request, body: LoginBody):
+    user_service = UserService()
+    user = user_service.get_user_by_app_id_and_name(app_id=body.app_id, name=body.name)
+    if user is None:
+        return standard_response(
+            message="user not found",
+            data="",
+            http_status=status.HTTP_404_NOT_FOUND,
+        )
+    token = user_service.create_user_token(user.id)
+
+    return standard_response(
+        message="login successfully",
+        data=token,
+        http_status=status.HTTP_200_OK,
     )
