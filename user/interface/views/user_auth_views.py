@@ -27,7 +27,7 @@ class RefreshTokenView(APIView):
         self.user_service = UserService()
 
     @validate_token(
-        roles=[UserRole.USER, UserRole.ADMIN], validate_type=UserTokenType.ACCESS
+        roles=[UserRole.USER, UserRole.ADMIN], validate_type=UserTokenType.REFRESH
     )
     def get(
         self,
